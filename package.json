@@ -13,6 +13,12 @@
   "author": "Biken Maharjan",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.16.3"
+    "bcrypt": "^3.0.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "monolog": "0.0.5",
+    "mysql": "^2.16.0",
+    "nodemon": "^1.18.3",
+    "promise-mysql": "^3.3.1"
   }
 }

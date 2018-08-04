@@ -1,0 +1,102 @@
+const bcrypt = require("bcrypt");
+const userModel = require("../models/user");
+errors = require("../controllers/errorController");
+
+
+// validation of user with bcrypt
+//3
+let validateLoginCustom = (password, dbPassword, callback) => {
+    "use strict";
+    // bcrypt.compare(password, dbPassword, (err, res) => {
+    //         if(res) {
+    //             callback(true);
+    //         } else {
+    //             callback(false);
+    //         }
+    //     });
+    callback(true);
+}
+
+// callee is validateUserByEmail
+let validateLoginByType = (userType, password, dbPassword,/* dbUserSeecret, user3rdId, userId, userSeecret,*/ callback) => {
+        "use strict";
+
+  console.log(userType, password, dbPassword) ;
+	if (userType === "custom") {
+	    //2
+		validateLoginCustom(password, dbPassword, callback);
+	} // else if (userType === "facebook") {
+// 		validateLoginFacebook(password, dbPassword, user3rdId, userId, callback);
+// 	} else if (userType === "google") {
+// 		validateLoginGoogle(password, dbPassword, user3rdId, userId, callback);
+// 	} else if (userType === "twitter") {
+// 		validateLoginTwitter(password, userSeecret, dbPassword, dbUserSeecret, user3rdId, userId, callback);
+	//}
+	else {
+		callback(false);
+	}
+}
+
+// this will be called from server to be verify
+//1  (email, password, secret, callback) <= this came to 3
+exports.validateUserByEmail = (email, password, seecret, callback) => {
+    "use strict";
+
+    let result = {},
+        userPassword = "";
+        //userSeecret = null,
+       // user3rdId = null
+
+
+    // search with username
+    // change this to username[ unique ] instead of email
+    userModel.findUserByEmail(email).then((user) => {
+
+        console.log(email, password, seecret);
+        try {
+          if (user !== null) {
+              // 3rd party will use user.accesToken
+              userPassword = user[0].userPassword //(user.userType === "custom") ? user.userPassword : user.accessToken;
+              //userSeecret = (user.accessTokenSecret) ? user.accessTokenSecret : null;
+              //user3rdId = (user.user3rdId !== undefined) ? user.user3rdId : null;
+              var userType = user[0].userType;
+              console.log("FOUND")
+              validateLoginByType(userType, password, userPassword, /*userSeecret, user3rdId, user._id, seecret,*/ (valid) => {
+                  if (valid) {
+                      console.log(valid)
+                      delete user[0].password;
+                      result.result = true;
+                      result.data = user;
+                      callback(result);
+                  } else {
+                      result.error = errors.notAuthorized;
+                      result.result = false;
+                      result.code = result.error.code;
+                      callback(result);
+                  }
+              });
+          } else {
+              console.log(result.error)
+              result.error = errors.loginNotFound;
+              result.result = false;
+              result.code = result.error.code;
+              callback(result);
+          }
+
+        }catch(err){
+          // null values when user is found
+          result.error = err;
+          result.code = err.code;
+          result.result = false;
+          callback(result);
+        }
+
+    }).catch((err) => {
+       // no user found
+        console.log("here")
+        result.error = err;
+        result.code = err.code;
+        result.result = false;
+        callback(result);
+    });
+};
