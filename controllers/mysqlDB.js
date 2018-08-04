@@ -13,7 +13,6 @@ const connection = mysql.createPool({
 module.exports.db = () =>{
 "use strict";
     return new Promise((resolve,reject) => {
-
          connection.getConnection().then(function(conn){
            console.log("connection established")
            global.setDatabase(conn)

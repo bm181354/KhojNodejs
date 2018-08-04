@@ -16,6 +16,11 @@ exports.getDatabase = () => {
     return database;
 };
 
+exports.getConnection = function(callback) {
+    pool.getConnection(function(err, connection) {
+        callback(err, connection);
+    });
+}
 
 // initialized
 exports.initDB = () => {

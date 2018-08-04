@@ -7,14 +7,16 @@ errors = require("../controllers/errorController");
 //3
 let validateLoginCustom = (password, dbPassword, callback) => {
     "use strict";
-    // bcrypt.compare(password, dbPassword, (err, res) => {
-    //         if(res) {
-    //             callback(true);
-    //         } else {
-    //             callback(false);
-    //         }
-    //     });
-    callback(true);
+    bcrypt.compare(password, dbPassword, (err, res) => {
+            if(res) {
+                console.log("Password is good")
+                callback(true);
+            } else {
+                console.log("Password is bad")
+                callback(false);
+            }
+        });
+    //callback(true);
 }
 
 // callee is validateUserByEmail

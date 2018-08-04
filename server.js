@@ -43,6 +43,13 @@ app.use(bodyParser.json());
 
  });
 
- /** *****************************  AUTH MODULE FUNCTIONS *************************/
+ // /** *****************************  AUTH MODULE FUNCTIONS *************************/
+ //
  app.use("/",require("./modules/auth/login.js")(router)) // login
+
+ /** *****************************  USER MODULE FUNCTIONS *************************/
+
+app.use("/", require("./modules/user/createUser.js")(router)); // Create new user
+
+
  module.exports = app

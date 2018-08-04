@@ -1,5 +1,6 @@
 
 const authController = require("../../controllers/authController");
+const apiResponse = require("../../controllers/apiresponse.js");
 
 // create validateUserByEmail
 // this is being called by server.js
@@ -12,8 +13,10 @@ module.exports = (router) => {
          //console.log(userResponse)
          if(userResponse.result){
             console.log("login.js, authController.validateUserByEmail",userResponse.result)
-           }
-
+            apiResponse(res, userResponse.data, null, null);
+          }else{
+              apiResponse(res, null, userResponse.error, userResponse.code);
+          }
         });
     });
       return router
