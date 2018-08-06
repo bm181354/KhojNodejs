@@ -19,6 +19,9 @@ exports.invalidLoginType = { "code": 400, "msg": "Invalid login type" };
 exports.cannotCreatePassword = { "code": 500, "msg": "Password create failed" };
 exports.userIsHost = { "code": 400, "msg": "User is host already" };
 
+// -------------------- GENERAL ERRORS ------------------- //
+exports.masterTokenGenerationError = { "code": 417, "msg": "Can't generate master Token" };
+exports.accessTokenGenerationError  = { "code": 417, "msg": "Can't generate token" };
 // -------------------- IMAGE ERRORS ------------------- //
 
 exports.imageDownloadError = { "code": 500, "msg": "Cannot obtain image" };

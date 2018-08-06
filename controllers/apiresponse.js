@@ -1,5 +1,5 @@
 /*
-  File : all response will be directed through this 
+  File : all response will be directed through this
 */
 module.exports = (response, data, error, code) => {
     "use strict";
@@ -11,12 +11,18 @@ module.exports = (response, data, error, code) => {
         if (code > 505) {
             code = 500;
         }
-        response.status(code).json({"data": data, "error": error});
-        response.send();
+        // "malformed query"
+        console.log(code)
+        if (typeof code === "string"){
+           response.status(503).json({"data": data, "error": "malformed query"});
+           response.send();
+        }else{
+           response.status(code).json({"data": data, "error": error});
+           response.send();
+      }
     } else {
         console.log("Headers set", data, error);
     }
 
     return true;
 };
-

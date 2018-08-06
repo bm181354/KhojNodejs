@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const userModel = require("../models/user");
-errors = require("../controllers/errorController");
+const errors = require("../controllers/errorController");
+const authModel = require("../models/auth");
 
 
 // validation of user with bcrypt
@@ -27,9 +28,9 @@ let validateLoginByType = (userType, password, dbPassword,/* dbUserSeecret, user
 	if (userType === "custom") {
 	    //2
 		validateLoginCustom(password, dbPassword, callback);
-	} // else if (userType === "facebook") {
-// 		validateLoginFacebook(password, dbPassword, user3rdId, userId, callback);
-// 	} else if (userType === "google") {
+	}  else if (userType === "facebook") {
+  	//validateLoginFacebook(password, dbPassword, user3rdId, userId, callback);
+  } //else if (userType === "google") {
 // 		validateLoginGoogle(password, dbPassword, user3rdId, userId, callback);
 // 	} else if (userType === "twitter") {
 // 		validateLoginTwitter(password, userSeecret, dbPassword, dbUserSeecret, user3rdId, userId, callback);
@@ -62,14 +63,27 @@ exports.validateUserByEmail = (email, password, seecret, callback) => {
               //userSeecret = (user.accessTokenSecret) ? user.accessTokenSecret : null;
               //user3rdId = (user.user3rdId !== undefined) ? user.user3rdId : null;
               var userType = user[0].userType;
+              // vaerify if it is valid first then:
+              var refreshToken = user[0].refreshToken;
+
               console.log("FOUND")
               validateLoginByType(userType, password, userPassword, /*userSeecret, user3rdId, user._id, seecret,*/ (valid) => {
                   if (valid) {
                       console.log(valid)
                       delete user[0].password;
-                      result.result = true;
-                      result.data = user;
-                      callback(result);
+                      authModel.createAccessToken(user[0].id,refreshToken).then((accessToken)=>{
+                        result.result = true;
+                        user[0].accessToken = accessToken
+                        result.data = user;
+                        result.accessToken = accessToken
+                        console.log("login-accesstoken",accessToken)
+                        callback(result);
+                      }).catch((err)=>{
+                        result.error = errors.accessTokenGenerationError;
+                        result.result = false;
+                        result.code = result.error.code;
+                        callback(result);
+                      })
                   } else {
                       result.error = errors.notAuthorized;
                       result.result = false;
