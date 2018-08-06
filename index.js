@@ -3,12 +3,11 @@
  */
 
 const app = require("./server.js");
-//TODO: - change port 
-// 'use strict': 
+//TODO: - change port
+// 'use strict':
 
 
-app.listen(process.env.PORT || 3000, function(){
+app.listen(process.env.PORT || 5000, function(){
     "use strict";
-    console.log("Is listening in PORT: 3000");
+    console.log("Is listening in PORT: 5000");
 });
-

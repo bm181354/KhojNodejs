@@ -12,11 +12,11 @@ createAccessToken = (userID,refreshToken) => {
   // create new JWT and send to the user
   return new Promise((resolve,reject) => {
     try{
-
      // check signature if not valid then reject (invalidMasterSignature)
-      var  accessToken = jwt.sign({ refreshToken , iat: Math.floor(Date.now() / 1000) - 30,
-        expires: 134512
-      }, 'secretKey1');
+     // for regeneration of accessToken
+      var  accessToken = jwt.sign({id:userID, refreshToken, iat: Math.floor(Date.now() / 1000) - 30
+      }, 'secretKey1',{expiresIn: '1h'});
+
       resolve(accessToken)
     }catch (err){
       console.log(err)
@@ -35,9 +35,8 @@ exports.createRefreshToken = (userID,authAccessToken) => {
        try{
            // for local authAccessToken will be null
            var authKey = (authAccessToken) ? authAccessToken : userID;
-           var  refreshToken = jwt.sign({ authKey, iat: Math.floor(Date.now() / 1000) - 30,
-             expires: 1345123412341234
-               }, 'secretKey');
+           var  refreshToken = jwt.sign({authKey, iat: Math.floor(Date.now() / 1000) - 30
+           }, 'secretKey',{expiresIn: '7d'});
            //authAccessToken [Facebook access token] <-  this will be null for local
            createAccessToken(userID,refreshToken).then((accessToken) => {
                     var data = {
