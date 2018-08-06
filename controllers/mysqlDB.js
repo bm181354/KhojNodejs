@@ -15,7 +15,8 @@ module.exports.db = () =>{
     return new Promise((resolve,reject) => {
          connection.getConnection().then(function(conn){
            console.log("connection established")
-           global.setDatabase(conn)
+           global.setDatabase(connection)
+           //console.log(connection)
            resolve()
            //
         }).catch((err)=>{
