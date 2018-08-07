@@ -57,7 +57,9 @@ exports.validateUserByEmail = (email, password, seecret, callback) => {
 
         console.log(email, password, seecret);
         try {
-          if (user !== null) {
+          // user null not working
+          if (user !== null &&  user.length !== 0) {
+              console.log(user == null)
               // 3rd party will use user.accesToken
               userPassword = user[0].userPassword //(user.userType === "custom") ? user.userPassword : user.accessToken;
               //userSeecret = (user.accessTokenSecret) ? user.accessTokenSecret : null;
