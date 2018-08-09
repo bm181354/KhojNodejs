@@ -9,7 +9,6 @@ exports.findUserProfile = (UserID) =>{
  "use strict"
    // promise
 }
-
 exports.findUserByEmail = (email) => {
   "use strict"
 
@@ -24,7 +23,6 @@ exports.findUserByEmail = (email) => {
            conn.release();
            reject(err)
          }
-
          var param = [email]
           // query that connection for the user
           conn.query('SELECT * from USERS WHERE email=?',param).then(function(rows){
@@ -46,6 +44,12 @@ exports.findUserByEmail = (email) => {
 
   })
 }
+
+//dummy
+exports.nameCheck = () =>{
+  return ("Biken Maharjan")
+}
+
 
 exports.insertUser = (user) => {
 
