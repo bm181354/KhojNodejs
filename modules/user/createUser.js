@@ -7,6 +7,8 @@ module.exports = (router) => {
     "use strict";
     console.log("outside createUser")
     router.post("/api/v1/user", (req, res) => {
+
+      try{
            let userType = req.body.userType;
            let userEmail = req.body.email
            console.log(userType)
@@ -56,6 +58,11 @@ module.exports = (router) => {
            }).catch((err)=>{
               apiResponse(res, null, err, err.code);
            })
+
+     }catch(err){
+       apiResponse(res, null, err, err.code);
+     }
+
     });
    return router;
   }
