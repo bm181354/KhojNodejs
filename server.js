@@ -2,12 +2,19 @@
  * Created by bikenMaharjan<bikenm.us> on 08/03/2018.
  */
 
- const express = require("express")
+ const express = require("express");
  const globals = require("./config/globals");
+ //const Ddos = require('ddos');  ---*
+/* For testing purpose remove the code
+*  resets every seconds
+*/
+ //var ddos = new Ddos({burst:10, limit:15}) //---*
  var app = express();
+
 
  let bodyParser = require("body-parser");
  router = express.Router();
+
 
 app.use(bodyParser.json());
  app.use((req, res, next) => {
@@ -42,6 +49,9 @@ app.use(bodyParser.json());
     }
 
  });
+
+  // doesn't work in localhost
+  // app.use(ddos.express); //---*
 
  // /** *****************************  AUTH MODULE FUNCTIONS *************************/
  //
