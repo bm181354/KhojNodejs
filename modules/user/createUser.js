@@ -38,7 +38,7 @@ module.exports = (router) => {
                    //TODO:- remove this and move to another route trigger when user click on email link
                    userController.createLocalUser(req.body).then((data)=>{
                          // instead of true send data variable
-                         apiResponse(res,data); // {"data":{"accessToken": "ASDGHBSADHU", "refreshToken":"Adfasdfadsf"}}
+                         apiResponse(res,[data]); // {"data":{"accessToken": "ASDGHBSADHU", "refreshToken":"Adfasdfadsf"}}
                    }).catch((err) => {
                         apiResponse(res, null, err, err.code);
                    });
@@ -58,7 +58,7 @@ module.exports = (router) => {
                   //
                   // TODO: check info object from lib/user
                   userController.create3partyUser(req.body).then((data)=>{
-                     apiResponse(res,data);
+                     apiResponse(res,[data]);
                   })
 
                 }).catch((err)=>{
@@ -77,16 +77,13 @@ module.exports = (router) => {
                     if(result.result){
                       //result has data
                       // no need refresh_token was created
-                      apiResponse(res,result);
+                      apiResponse(res,[result]);
 
                     }else{
                       apiResponse(res,null,result.error,result.code);
                     }
 
                   })
-
-
-
 
                 }).catch((err)=>{
                     // auth error

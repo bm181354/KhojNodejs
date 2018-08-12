@@ -51,8 +51,10 @@ exports.validateRefreshToken = (email,callback) => {
        // create access token [X]
        // resolve({accessToken,RefreshToken})[X]
        console.log("GOT THE validateRefreshToken",data)
-       var validate = true // change this
-       if(true){
+       //TODO:- create a validator of JWT
+       var isValidate = false // change this
+
+       if(isValidate == false){
          // refresh token is not good anymore
          authModel.createRefreshToken(email,null).then(({data,refreshToken})=>{
              userModel.updateRefreshToken(email,refreshToken).then(()=>{
@@ -78,14 +80,12 @@ exports.validateRefreshToken = (email,callback) => {
           // refresh token is not good anymore // no need to access db
           console.log("email,data.refreshToken",email,data.refreshToken)
           authModel.createAccessToken(email,data.refreshToken).then((accessToken)=>{
-            console.log("=======createAccessToken",accessToken)
             result.result = true;
             result.accessToken = accessToken;
             result.refreshToken = data.refreshToken
             callback(result);
 
           }).catch((err)=>{
-            console.log(err,"==========++++err")
             result.error = errors.accessTokenGenerationError;
             result.result = false;
             result.code = result.error.code;
