@@ -103,7 +103,7 @@ exports.getRefreshToken = (email) =>{
              // console.log(JSON.parse((rows))); // json file
              conn.release();
              var data = JSON.parse(JSON.stringify(rows))
-             resolve(data);  // if found
+             resolve(data[0]);  // if found
              //console.log(mysqlDB)
           }).catch((err) => {
              console.log("Error username")
@@ -124,7 +124,7 @@ exports.getRefreshToken = (email) =>{
 
 
 // update refreshToken
-exports.updateRefreshToken = (email) =>{
+exports.updateRefreshToken = (email,refreshToken) =>{
   return new Promise((resolve,reject)=>{
     "use strict"
     // setup here
@@ -137,7 +137,7 @@ exports.updateRefreshToken = (email) =>{
              conn.release();
              reject(err)
            }
-           var param = [email]
+           var param = [refreshToken,email]
            conn.query("UPDATE USERS SET refreshToken = ? WHERE email = ? ",param).then(function(rows){
               // console.log(JSON.parse((rows))); // json file
            conn.release();

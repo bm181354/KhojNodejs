@@ -21,7 +21,7 @@ exports.userIsHost = { "code": 400, "msg": "User is host already" };
 
 // -------------------- GENERAL ERRORS ------------------- //
 exports.masterTokenGenerationError = { "code": 417, "msg": "Can't generate master Token" };
-exports.accessTokenGenerationError  = { "code": 417, "msg": "Can't generate token" };
+exports.accessTokenGenerationError  = { "code": 417, "msg": "Can't generate access token" };
 // -------------------- IMAGE ERRORS ------------------- //
 
 exports.imageDownloadError = { "code": 500, "msg": "Cannot obtain image" };

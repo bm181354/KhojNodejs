@@ -14,11 +14,14 @@ exports.createAccessToken = (email,refreshToken) => {
     try{
      // check signature if not valid then reject (invalidMasterSignature)
      // for regeneration of accessToken
+     console.log("createAccessToken")
       var  accessToken = jwt.sign({id:email, refreshToken, iat: Math.floor(Date.now() / 1000) - 30
       }, 'secretKey1',{expiresIn: '1h'});
+      console.log("111",accessToken)
       resolve(accessToken)
+
     }catch (err){
-      console.log(err)
+      console.log("also",err)
       reject(error.accessTokenGenerationError)
     }
   })
@@ -65,4 +68,4 @@ exports.createRefreshToken = (email,authAccessToken) => {
 
 }
 
-exports.createAccessToken = createAccessToken
+exports.createAccessToken = this.createAccessToken

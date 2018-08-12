@@ -2,6 +2,7 @@
 const userController = require("../../libs/user.js");
 const apiResponse = require("../../controllers/apiresponse.js");
 const emailController = require("../../controllers/emailController")
+const authController = require("../../controllers/authController");;
 
 module.exports = (router) => {
     "use strict";
@@ -71,8 +72,8 @@ module.exports = (router) => {
                   // authenticated from checkFacebook [X]
                   // read from mysql and
                   // create new access token and send refresh
-                  authController.validateRefreshToken(email,(result)=>{
-
+                  authController.validateRefreshToken(req.body.email,(result)=>{
+                    console.log(result)
                     if(result.result){
                       //result has data
                       // no need refresh_token was created

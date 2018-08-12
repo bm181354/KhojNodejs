@@ -43,15 +43,16 @@ let validateLoginByType = (userType, password, dbPassword,/* dbUserSeecret, user
 }
 
 exports.validateRefreshToken = (email,callback) => {
+  "use strict";
     let result = {}
 
     userModel.getRefreshToken(email).then((data)=>{
        // check validity of refresh token []
        // create access token [X]
        // resolve({accessToken,RefreshToken})[X]
-
+       console.log("GOT THE validateRefreshToken",data)
        var validate = true // change this
-       if(false){
+       if(true){
          // refresh token is not good anymore
          authModel.createRefreshToken(email,null).then(({data,refreshToken})=>{
              userModel.updateRefreshToken(email,refreshToken).then(()=>{
@@ -75,18 +76,23 @@ exports.validateRefreshToken = (email,callback) => {
 
        }else{
           // refresh token is not good anymore // no need to access db
-          authModel.createAccessToken(email,refreshToken).then(accessToken=>{
+          console.log("email,data.refreshToken",email,data.refreshToken)
+          authModel.createAccessToken(email,data.refreshToken).then((accessToken)=>{
+            console.log("=======createAccessToken",accessToken)
             result.result = true;
             result.accessToken = accessToken;
-            result.refreshToken = refreshToken
+            result.refreshToken = data.refreshToken
             callback(result);
 
           }).catch((err)=>{
+            console.log(err,"==========++++err")
             result.error = errors.accessTokenGenerationError;
             result.result = false;
             result.code = result.error.code;
             callback(result);
           })
+
+
        }
 
 
