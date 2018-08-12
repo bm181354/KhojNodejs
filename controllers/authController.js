@@ -20,6 +20,8 @@ let validateLoginCustom = (password, dbPassword, callback) => {
     //callback(true);
 }
 
+
+
 // callee is validateUserByEmail
 let validateLoginByType = (userType, password, dbPassword,/* dbUserSeecret, user3rdId, userId, userSeecret,*/ callback) => {
         "use strict";
@@ -38,6 +40,63 @@ let validateLoginByType = (userType, password, dbPassword,/* dbUserSeecret, user
 	else {
 		callback(false);
 	}
+}
+
+exports.validateRefreshToken = (email,callback) => {
+    let result = {}
+
+    userModel.getRefreshToken(email).then((data)=>{
+       // check validity of refresh token []
+       // create access token [X]
+       // resolve({accessToken,RefreshToken})[X]
+
+       var validate = true // change this
+       if(false){
+         // refresh token is not good anymore
+         authModel.createRefreshToken(email,null).then(({data,refreshToken})=>{
+             userModel.updateRefreshToken(email,refreshToken).then(()=>{
+               result.result = true;
+               result.accessToken = data.access_token;
+               result.refreshToken = refreshToken
+               callback(result);
+             }).catch((err)=>{
+               console.log("validateRefreshToken")
+               result.error = err;
+               result.result = false;
+               result.code = result.error.code;
+               callback(result);
+             })
+         }).catch((err)=>{
+           result.error = errors.masterTokenGenerationError;
+           result.result = false;
+           result.code = result.error.code;
+           callback(result);
+         })
+
+       }else{
+          // refresh token is not good anymore // no need to access db
+          authModel.createAccessToken(email,refreshToken).then(accessToken=>{
+            result.result = true;
+            result.accessToken = accessToken;
+            result.refreshToken = refreshToken
+            callback(result);
+
+          }).catch((err)=>{
+            result.error = errors.accessTokenGenerationError;
+            result.result = false;
+            result.code = result.error.code;
+            callback(result);
+          })
+       }
+
+
+    }).catch((err)=>{
+      // can't get refresh_token
+      result.error = errors.notFound;
+      result.result = false;
+      result.code = result.error.code;
+      callback(result);
+    });
 }
 
 // this will be called from server to be verify
@@ -118,3 +177,4 @@ exports.validateUserByEmail = (email, password, seecret, callback) => {
         callback(result);
     });
 };
+/////////////
