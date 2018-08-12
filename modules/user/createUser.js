@@ -15,11 +15,15 @@ module.exports = (router) => {
             //console.log(req)
            //TODO:- add validation of some sort
 
-           userController.checkBaseParam(req).then(()=>{
-             if (userType === "custom") {
+
+           //////
+
+           if (userType === "custom") {
+             userController.checkBaseParam(req).then(()=>{
                    // send email
                    //req.body needs to be signed and attached with email
                    // link with link to this route
+
 
                    // move this to api/v1/emailVerify/:token
 
@@ -38,26 +42,65 @@ module.exports = (router) => {
                         apiResponse(res, null, err, err.code);
                    });
                    // end
-             }
-             else{
-               // create third party
-               /* YOUR CODE */
-               console.log("facebook")
-               userController.checkFacebook(req.body.accessToken,req.body.email).then((info)=>{
-                 //
-                 // TODO: check info object from lib/user
-                 userController.create3partyUser(req.body).then((data)=>{
-                    apiResponse(res,data);
-                 })
 
-               }).catch((err)=>{
-                  console.log("ERR1")
-                  apiResponse(res, null, err, err.code);
-               })
-             }
-           }).catch((err)=>{
-              apiResponse(res, null, err, err.code);
-           })
+             }).catch((err)=>{
+                apiResponse(res, null, err, err.code);
+             })
+           }
+           else{
+             // create third party
+             /* YOUR CODE */
+
+              userController.checkBaseParam(req).then(()=>{
+                console.log("facebook")
+                userController.checkFacebook(req.body.accessToken,req.body.email).then((info)=>{
+                  //
+                  // TODO: check info object from lib/user
+                  userController.create3partyUser(req.body).then((data)=>{
+                     apiResponse(res,data);
+                  })
+
+                }).catch((err)=>{
+                   console.log("ERR1")
+                   apiResponse(res, null, err, err.code);
+                })
+
+              }).catch((err)=>{
+                // login
+                userController.checkFacebook(req.body.accessToken,req.body.email).then((info)=>{
+                  // authenticated from checkFacebook [X]
+                  // read from mysql and
+                  // create new access token and send refresh
+                  authController.validateRefreshToken(email,(result)=>{
+
+                    if(result.result){
+                      //result has data
+                      // no need refresh_token was created
+                      apiResponse(res,result);
+
+                    }else{
+                      apiResponse(res,null,result.error,result.code);
+                    }
+
+                  })
+
+
+
+
+                }).catch((err)=>{
+                    // auth error
+                     apiResponse(res, null, err, err.code);
+                })
+
+                //or
+
+                // actual error
+
+              });
+
+           }
+
+           //////
 
      }catch(err){
        apiResponse(res, null, err, err.code);

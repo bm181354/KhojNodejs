@@ -153,8 +153,10 @@ exports.checkFacebook = (accessToken,email) => {
 
   return new Promise((resolve,reject)=>{
     console.log("checkFacebook")
+
     FB.options({ accessToken: accessToken});
     FB.api('/me?fields=id,name,email', function (res) {
+
       if(res && res.error) {
 
           if(res.error.code === 'ETIMEDOUT') {
@@ -168,7 +170,6 @@ exports.checkFacebook = (accessToken,email) => {
       }
       else {
         // check and send the boolean
-        console.log(res)
         if (res.email == email){
           resolve(res) // if email matches
         }else{

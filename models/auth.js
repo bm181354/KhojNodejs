@@ -6,7 +6,7 @@ const error = require('../controllers/errorController');
 // expires in 15 minutes
 // doesn't go into database
 // for 301 error
-createAccessToken = (email,refreshToken) => {
+exports.createAccessToken = (email,refreshToken) => {
   "use strict";
   // get refreshToken from userID
   // create new JWT and send to the user
@@ -24,6 +24,9 @@ createAccessToken = (email,refreshToken) => {
   })
 
 }
+
+
+
 // expires in 3 days
 // ONLY through the mail they will get userIDToken
 exports.createRefreshToken = (email,authAccessToken) => {
@@ -37,7 +40,7 @@ exports.createRefreshToken = (email,authAccessToken) => {
            var  refreshToken = jwt.sign({authKey, iat: Math.floor(Date.now() / 1000) - 30
            }, 'secretKey',{expiresIn: '7d'});
            //authAccessToken [Facebook access token] <-  this will be null for local
-           createAccessToken(email,refreshToken).then((accessToken) => {
+           this.createAccessToken(email,refreshToken).then((accessToken) => {
                     var data = {
                       "userEmail":email,
                       "access_token":accessToken,
