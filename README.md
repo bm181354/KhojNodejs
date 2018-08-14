@@ -5,9 +5,9 @@ A react web application which can help people to share their viewpoint on a foru
 ## My responsibility:
 
 Mostly Development of backend
--Backend is completed written in Node.js/Express.js | 
--Modeling data and Database [MySQL] | OAuth 2.0 [Facebook] for 3rd party user registration | 
--JWT for Authorization of resource | 
--Bcrypt (Hash) for forward secrecy of password| 
--AWS EC2 (Deployment) and ELB for fault tolerant application| 
--Mocha and Chai for Unit testing and Integration Testing.
+- Backend is completed written in Node.js/Express.js | 
+- Modeling data and Database [MySQL] | OAuth 2.0 [Facebook] for 3rd party user registration | 
+- JWT for Authorization of resource | 
+- Bcrypt (Hash) for forward secrecy of password| 
+- AWS EC2 (Deployment) and ELB for fault tolerant application| 
+- Mocha and Chai for Unit testing and Integration Testing.
