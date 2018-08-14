@@ -7,7 +7,7 @@ const app = require("./server.js");
 // 'use strict':
 
 
-app.listen(process.env.PORT || 6011, function(){
+app.listen(process.env.PORT || 5011, function(){
     "use strict";
-    console.log("Is listening in PORT: 6011");
+    console.log("Is listening in PORT: 5011");
 });

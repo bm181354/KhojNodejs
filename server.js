@@ -4,6 +4,7 @@
 
  const express = require("express");
  const globals = require("./config/globals");
+ const jwtToken = require("./controllers/jwtController");
  //const Ddos = require('ddos');  ---*
 /* For testing purpose remove the code
 *  resets every seconds
@@ -50,16 +51,24 @@ app.use(bodyParser.json());
 
  });
 
-  // doesn't work in localhost
-  // app.use(ddos.express); //---*
-
+ // doesn't work in localhost
+ // app.use(ddos.express); //---*
  // /** *****************************  AUTH MODULE FUNCTIONS *************************/
  //
  app.use("/",require("./modules/auth/login.js")(router)) // login
+ //app.use("/",require("./modules/auth/refreshToken.js")(router))
 
  /** *****************************  USER MODULE FUNCTIONS *************************/
+ app.use("/", require("./modules/user/createUser.js")(router)); // Create new user
+ /** *****************************  GET MODULE FUNCTIONS *************************/
 
-app.use("/", require("./modules/user/createUser.js")(router)); // Create new user
+ /** *****************************  JWT MODULE FUNCTIONS *************************/
+ // only for post
+  app.use(jwtToken.verifyJWT);
+
+
+
+
 
 
  module.exports = app

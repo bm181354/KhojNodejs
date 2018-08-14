@@ -2,6 +2,7 @@
 // createRefreshToken
 const jwt = require("jsonwebtoken")
 const error = require('../controllers/errorController');
+const config = require("../config/config");
 
 // expires in 15 minutes
 // doesn't go into database
@@ -15,10 +16,9 @@ exports.createAccessToken = (email,refreshToken) => {
      // check signature if not valid then reject (invalidMasterSignature)
      // for regeneration of accessToken
      console.log("createAccessToken")
-      var  accessToken = jwt.sign({id:email, refreshToken, iat: Math.floor(Date.now() / 1000) - 30
-      }, 'secretKey1',{expiresIn: '1h'});
-      console.log("111",accessToken)
-      resolve(accessToken)
+      var  accessToken = jwt.sign({id:email,type:"access", iat: Math.floor(Date.now() / 1000) - 30
+      }, config.CERT,{expiresIn: '1h'});
+      resolve("bearer "+ accessToken)
 
     }catch (err){
       console.log("also",err)
@@ -39,9 +39,9 @@ exports.createRefreshToken = (email,authAccessToken) => {
           // create RefreshToken(userID)
        try{
            // for local authAccessToken will be null
-           var authKey = (authAccessToken) ? authAccessToken : email;
-           var  refreshToken = jwt.sign({authKey, iat: Math.floor(Date.now() / 1000) - 30
-           }, 'secretKey',{expiresIn: '7d'});
+           var authKey = /*(authAccessToken) ? authAccessToken : */ email;
+           var  refreshToken = "bearer "+jwt.sign({id:authKey,type:"master", iat: Math.floor(Date.now() / 1000) - 30
+           },config.CERT,{expiresIn: '7d'});
            //authAccessToken [Facebook access token] <-  this will be null for local
            this.createAccessToken(email,refreshToken).then((accessToken) => {
                     var data = {
