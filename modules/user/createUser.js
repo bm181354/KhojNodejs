@@ -64,11 +64,8 @@ module.exports = (router) => {
               }).catch((err)=>{
                       // login
                       userController.checkFacebook(req.body.accessToken,req.body.email).then((info)=>{
-                        // authenticated from checkFacebook [X]
-                        // read from mysql and
-                        // create new access token and send refresh
                         //TODO: id instead of req.body.email
-                        userController.idtoEmail(req.body.email).then((id)=>{
+                        userController.emailtoID(req.body.email).then((id)=>{
                           authController.validateRefreshToken(id,(result)=>{
                               if(result.result){
                                 apiResponse(res,[result]);
