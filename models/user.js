@@ -85,7 +85,7 @@ exports.nameCheck = () =>{
 }
 
 //facebook
-exports.getRefreshToken = (email) =>{
+exports.getRefreshToken = (id) =>{
 
   "use strict"
   return new Promise((resolve,reject)=>{
@@ -97,9 +97,9 @@ exports.getRefreshToken = (email) =>{
            conn.release();
            reject(err)
          }
-         var param = [email]
+         var param = [id]
           // query that connection for the user
-          conn.query('SELECT * from USERS WHERE email=?',param).then(function(rows){
+          conn.query('SELECT * from USERS WHERE id=?',param).then(function(rows){
              // console.log(JSON.parse((rows))); // json file
              conn.release();
              var data = JSON.parse(JSON.stringify(rows))
@@ -122,7 +122,7 @@ exports.getRefreshToken = (email) =>{
 
 }
 
-
+/*
 // update refreshToken
 exports.updateRefreshToken = (email,newRefreshToken) =>{
   return new Promise((resolve,reject)=>{
@@ -157,8 +157,7 @@ exports.updateRefreshToken = (email,newRefreshToken) =>{
 
   })
 }
-
-
+*/
 exports.insertUser = (user) => {
 
   return new Promise((resolve, reject) =>{
@@ -173,8 +172,8 @@ exports.insertUser = (user) => {
               conn.release();
               reject(err)
             }
-            var param = [user.name,user.email,user.phone_no,user.age,user.username,user.userPassword,user.refreshToken,user.userType]
-            conn.query("INSERT INTO USERS (name,email,phone_no,age,username,userPassword,refreshToken,userType) VALUES (?,?,?,?,?,?,?,?)",param).then(function(rows){
+            var param = [user.name,user.email,user.phone_no,user.age,user.username,user.userPassword,user.userType]
+            conn.query("INSERT INTO USERS (name,email,phone_no,age,username,userPassword,userType) VALUES (?,?,?,?,?,?,?)",param).then(function(rows){
                // console.log(JSON.parse((rows))); // json file
             conn.release();
             var data = JSON.parse(JSON.stringify(rows))
@@ -191,4 +190,37 @@ exports.insertUser = (user) => {
           }
        }); // end of getConn
   } ) //
+}
+
+
+exports.updateRefreshToken = (refreshToken,id) => {
+  return new Promise((resolve, reject)=>{
+    globals.getConn((err,conn) => {
+          try{
+                   if(err){
+                      conn.release();
+                      reject(err)
+                    }
+                     var param = [refreshToken,id]
+                     // query that connection for the user
+                     conn.query('UPDATE USERS SET refreshToken=? WHERE id = ?',param).then(function(rows){
+                        // console.log(JSON.parse((rows))); // json file
+                        conn.release();
+                        var data = JSON.parse(JSON.stringify(rows))
+                        resolve(data);  // if found
+                        //console.log(mysqlDB)
+                     }).catch((err) => {
+                        console.log("Error username")
+                        conn.release();
+                        reject(err);   // if user not found
+                  });
+
+            } catch (err){
+                    console.log("LOG!")
+                    reject(errors.defaultDbError)
+            }//
+      })
+
+  });
+
 }

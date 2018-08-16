@@ -19,9 +19,6 @@ let validateLoginCustom = (password, dbPassword, callback) => {
         });
     //callback(true);
 }
-
-
-
 // callee is validateUserByEmail
 let validateLoginByType = (userType, password, dbPassword,/* dbUserSeecret, user3rdId, userId, userSeecret,*/ callback) => {
         "use strict";
@@ -42,11 +39,11 @@ let validateLoginByType = (userType, password, dbPassword,/* dbUserSeecret, user
 	}
 }
 
-exports.validateRefreshToken = (email,callback) => {
+exports.validateRefreshToken = (id,callback) => {
   "use strict";
     let result = {}
 
-    userModel.getRefreshToken(email).then((data)=>{
+    userModel.getRefreshToken(id).then((data)=>{
        // check validity of refresh token []
        // create access token [X]
        // resolve({accessToken,RefreshToken})[X]
@@ -56,8 +53,8 @@ exports.validateRefreshToken = (email,callback) => {
 
        if(isValidate == false){
          // refresh token is not good anymore
-         authModel.createRefreshToken(email,null).then(({data,refreshToken})=>{
-             userModel.updateRefreshToken(email,refreshToken).then(()=>{
+         authModel.createRefreshToken(id,null).then(({data,refreshToken})=>{
+             userModel.updateRefreshToken(id,refreshToken).then(()=>{
                result.result = true;
                result.accessToken = data.access_token;
                result.refreshToken = refreshToken
@@ -141,6 +138,7 @@ exports.validateUserByEmail = (email, password, seecret, callback) => {
                       authModel.createAccessToken(user[0].id,refreshToken).then((accessToken)=>{
                         result.result = true;
                         user[0].accessToken = accessToken
+                        user[0].refreshToken = "bearer "+refreshToken
                         result.data = user;
                         result.accessToken = accessToken
                         console.log("login-accesstoken",accessToken)

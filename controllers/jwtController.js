@@ -33,3 +33,31 @@ exports.verifyJWT = (req,res,next) =>{
       res.send();
     }
 }
+
+// FOR validate purpose
+exports.verifyAccessToken = (refreshToken) =>{
+  return jwt.verify(refreshToken, config.CERT, function(err, decoded) {
+        console.log("DECODED",decoded)
+        if(err){
+          return {id:null,isSuccess:false}
+        }
+        if(decoded.type === "master"){
+           console.log("DECODED",1)
+           return {id:decoded.id,isSuccess:true}
+        }else{
+            console.log("DECODED",4)
+            return {id:decoded.id,isSuccess:false}
+        }
+    });
+}
+// raw decoded data
+exports.decodeJWT = (token) =>{
+  return new Promise((resolve,reject)=>{
+    jwt.verify(token, config.CERT, function(err, decoded) {
+        if(err){
+          reject(err)
+        }
+        resolve(decode)
+    });
+  })
+}

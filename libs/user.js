@@ -27,20 +27,24 @@ exports.createLocalUser = (inputs) => {
              //inputs.refreshToken = refreshToken
              // create userID with hash(email_address)
              var authAccessToken = null // for custom
-             authModel.createRefreshToken(inputs.email,authAccessToken).then(({data,refreshToken})=>{
-                 //Store hash in your password DB.
-                 console.log("check",refreshToken)
-                 console.log("data",data)
-                 inputs.refreshToken = refreshToken
-                 userModel.insertUser(inputs).then((user)=>{
-                    console.log("user",user.insertId)
-                    resolve(data);
+             //inputs.refreshToken = refreshToken ---1
+             userModel.insertUser(inputs).then((user)=>{
+                    authModel.createRefreshToken(user.insertId,authAccessToken).then(({data,refreshToken})=>{
+                        userModel.updateRefreshToken(refreshToken,user.insertId).then((newCheck)=>{
+                            data.refresh_token = "bearer " + refreshToken;
+                            resolve(data);
+                        }).catch((err)=>{
+                            reject(err);
+                        })
+                    }).catch((err)=>{
+                        reject(err);
+                    });//createRefreshToken
+
+
                  }).catch((err) =>{
                     reject(err);
                   }); // insertUser
-                }).catch((err)=>{
-                    reject(err);
-                });//createRefreshToken
+
 
               })
 
@@ -62,18 +66,22 @@ exports.create3partyUser = (user) => {
     if (user.accessToken === undefined || typeof user.accessToken !== "string") {
             reject(errors.paramCorrupted);
         }
-        authModel.createRefreshToken(user.email,user.accessToken).then(({data,refreshToken})=>{
-            userModel.insertUser(user).then(() => {
-                    resolve(data);
-            }).catch( (dbError) => {
-                    reject(dbError);
-            });
-        }).catch((err)=>{
-              reject(err);
-        });//createRefreshToken
+        userModel.insertUser(user).then(() => {
+            authModel.createRefreshToken(user.insertId,user.accessToken).then(({data,refreshToken})=>{
+              userModel.updateRefreshToken(refreshToken,user.insertId).then((newCheck)=>{
+                      data.refresh_token = "bearer " + refreshToken;
+                      resolve(data);
+                  }).catch((err)=>{
+                      reject(err);
+                  })
+              }).catch((err)=>{
+                reject(err);
+              });//createRefreshToken
+          }).catch( (dbError) => {
+                reject(dbError);
+          });
 
-
-  })
+    })
 }
 
 //checker (2DB request)

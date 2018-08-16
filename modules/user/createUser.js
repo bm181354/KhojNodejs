@@ -3,6 +3,7 @@ const userController = require("../../libs/user.js");
 const apiResponse = require("../../controllers/apiresponse.js");
 const emailController = require("../../controllers/emailController")
 const authController = require("../../controllers/authController");
+const jwtTokenController = require("../../controllers/jwtController");
 
 module.exports = (router) => {
     "use strict";
@@ -48,43 +49,43 @@ module.exports = (router) => {
            else{
              // create third party
              /* YOUR CODE */
-
               userController.checkBaseParam(req).then(()=>{
-                console.log("facebook")
-                userController.checkFacebook(req.body.accessToken,req.body.email).then((info)=>{
-                  //
-                  // TODO: check info object from lib/user
-                  userController.create3partyUser(req.body).then((data)=>{
-                     apiResponse(res,[data]);
-                  })
+                        console.log("facebook")
+                        userController.checkFacebook(req.body.accessToken,req.body.email).then((info)=>{
+                          // TODO: check info object from lib/user
+                          userController.create3partyUser(req.body).then((data)=>{
+                             apiResponse(res,[data]);
+                          })
 
-                }).catch((err)=>{
-                   console.log("ERR1")
-                   apiResponse(res, null, err, err.code);
-                })
-
+                        }).catch((err)=>{
+                           console.log("ERR1")
+                           apiResponse(res, null, err, err.code);
+                        })
               }).catch((err)=>{
-                // login
-                userController.checkFacebook(req.body.accessToken,req.body.email).then((info)=>{
-                  // authenticated from checkFacebook [X]
-                  // read from mysql and
-                  // create new access token and send refresh
-                  authController.validateRefreshToken(req.body.email,(result)=>{
-                    console.log(result)
-                    if(result.result){
-                      //result has data
-                      // no need refresh_token was created
-                      apiResponse(res,[result]);
+                      // login
+                      userController.checkFacebook(req.body.accessToken,req.body.email).then((info)=>{
+                        // authenticated from checkFacebook [X]
+                        // read from mysql and
+                        // create new access token and send refresh
+                        //TODO: id instead of req.body.email
+                        var token = req.headers["authorization"].split(" ");
+                        jwtTokenController.decodeJWT(token[1]).then((decode)=>{
+                          authController.validateRefreshToken(decode.id,(result)=>{
+                                console.log(result)
+                                if(result.result){
+                                  apiResponse(res,[result]);
+                                }else{
+                                  apiResponse(res,null,result.error,result.code);
+                                }
 
-                    }else{
-                      apiResponse(res,null,result.error,result.code);
-                    }
-
-                  })
+                              })
+                        }).catch((err)=>{
+                              apiResponse(res,null,result.error,result.code);
+                        })
 
                 }).catch((err)=>{
-                    // auth error
-                     apiResponse(res, null, err, err.code);
+                        // auth error
+                         apiResponse(res, null, err, err.code);
                 })
 
                 //or
