@@ -193,7 +193,7 @@ exports.checkFacebook = (accessToken,email) => {
 
 //getID from email
 exports.emailtoID = (email) =>{
-   new Promise((resolve,reject)=>{
+   return new Promise((resolve,reject)=>{
       userModel.getIDFromEmail(email).then((data)=>{
         resolve(data.id)
       }).catch((err)=>{
