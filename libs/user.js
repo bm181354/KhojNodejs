@@ -179,16 +179,27 @@ exports.checkFacebook = (accessToken,email) => {
           }
       }
       else {
-        // check and send the boolean
-        if (res.email == email){
-          resolve(res) // if email matches
-        }else{
-          reject(res)
-        }
+            // check and send the boolean
+            if (res.email == email){
+              resolve(res) // if email matches
+            }else{
+              reject(res)
+            }
         console.log(res);
       }
     });
   })
+}
+
+//getID from email
+exports.emailtoID = (email) =>{
+   new Promise((resolve,reject)=>{
+      userModel.getIDFromEmail(email).then((data)=>{
+        resolve(data.id)
+      }).catch((err)=>{
+        reject(err)
+      })
+   })
 }
 
 // Post Create

@@ -134,8 +134,9 @@ exports.validateUserByEmail = (email, password, seecret, callback) => {
               validateLoginByType(userType, password, userPassword, /*userSeecret, user3rdId, user._id, seecret,*/ (valid) => {
                   if (valid) {
                       console.log(valid)
+                      console.log(user[0].id)
                       delete user[0].password;
-                      authModel.createAccessToken(user[0].id,refreshToken).then((accessToken)=>{
+                      authModel.createAccessToken(refreshToken).then((accessToken)=>{
                         result.result = true;
                         user[0].accessToken = accessToken
                         user[0].refreshToken = "bearer "+refreshToken

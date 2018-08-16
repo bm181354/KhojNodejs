@@ -39,6 +39,7 @@ exports.verifyAccessToken = (refreshToken) =>{
   return jwt.verify(refreshToken, config.CERT, function(err, decoded) {
         console.log("DECODED",decoded)
         if(err){
+          console.log(err,refreshToken)
           return {id:null,isSuccess:false}
         }
         if(decoded.type === "master"){

@@ -68,30 +68,22 @@ module.exports = (router) => {
                         // read from mysql and
                         // create new access token and send refresh
                         //TODO: id instead of req.body.email
-                        var token = req.headers["authorization"].split(" ");
-                        jwtTokenController.decodeJWT(token[1]).then((decode)=>{
-                          authController.validateRefreshToken(decode.id,(result)=>{
-                                console.log(result)
-                                if(result.result){
-                                  apiResponse(res,[result]);
-                                }else{
-                                  apiResponse(res,null,result.error,result.code);
-                                }
-
-                              })
-                        }).catch((err)=>{
-                              apiResponse(res,null,result.error,result.code);
+                        userController.idtoEmail(req.body.email).then((id)=>{
+                          authController.validateRefreshToken(id,(result)=>{
+                              if(result.result){
+                                apiResponse(res,[result]);
+                              }else{
+                                apiResponse(res,null,result.error,result.code);
+                              }
+                          })
+                        }).catch(err=>{
+                          apiResponse(res, null, err, err.code);
                         })
 
                 }).catch((err)=>{
                         // auth error
-                         apiResponse(res, null, err, err.code);
+                        apiResponse(res, null, err, err.code);
                 })
-
-                //or
-
-                // actual error
-
               });
 
            }

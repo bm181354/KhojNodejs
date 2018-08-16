@@ -172,8 +172,8 @@ exports.insertUser = (user) => {
               conn.release();
               reject(err)
             }
-            var param = [user.name,user.email,user.phone_no,user.age,user.username,user.userPassword,user.userType]
-            conn.query("INSERT INTO USERS (name,email,phone_no,age,username,userPassword,userType) VALUES (?,?,?,?,?,?,?)",param).then(function(rows){
+            var param = [user.name,user.email,user.age,user.username,user.userPassword,user.userType]
+            conn.query("INSERT INTO USERS (name,email,age,username,userPassword,userType) VALUES (?,?,?,?,?,?)",param).then(function(rows){
                // console.log(JSON.parse((rows))); // json file
             conn.release();
             var data = JSON.parse(JSON.stringify(rows))
@@ -223,4 +223,34 @@ exports.updateRefreshToken = (refreshToken,id) => {
 
   });
 
+}
+
+exports.getIDFromEmail = (email) =>{
+  return new Promise((resolve, reject)=>{
+    globals.getConn((err,conn) => {
+
+        try{
+            if(err){
+              conn.release();
+              reject(err)
+            }
+            var param = [email]
+            conn.query('SELECT id from USERS WHERE email=?',param).then(function(rows){
+                // console.log(JSON.parse((rows))); // json file
+                conn.release();
+                var data = JSON.parse(JSON.stringify(rows))
+                resolve(data);  // if found
+                //console.log(mysqlDB)
+             }).catch((err) => {
+                console.log("Error id")
+                conn.release();
+                reject(err);   // if user not found
+            });
+
+        } catch (err){
+           reject(errors.defaultDbError)
+        }//
+
+    });
+  });
 }
