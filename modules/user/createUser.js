@@ -2,7 +2,7 @@
 const userController = require("../../libs/user.js");
 const apiResponse = require("../../controllers/apiresponse.js");
 const emailController = require("../../controllers/emailController")
-const authController = require("../../controllers/authController");;
+const authController = require("../../controllers/authController");
 
 module.exports = (router) => {
     "use strict";
@@ -15,10 +15,7 @@ module.exports = (router) => {
            console.log(userType)
             //console.log(req)
            //TODO:- add validation of some sort
-
-
            //////
-
            if (userType === "custom") {
              userController.checkBaseParam(req).then(()=>{
                    // send email

@@ -50,7 +50,8 @@ app.use(bodyParser.json());
     }
 
  });
-
+ // only for post
+ //app.use(jwtToken.verifyJWT);
  // doesn't work in localhost
  // app.use(ddos.express); //---*
  // /** *****************************  AUTH MODULE FUNCTIONS *************************/
@@ -63,11 +64,6 @@ app.use(bodyParser.json());
  /** *****************************  GET MODULE FUNCTIONS *************************/
 
  /** *****************************  JWT MODULE FUNCTIONS *************************/
- // only for post
-  app.use(jwtToken.verifyJWT);
-
-
-
 
 
 

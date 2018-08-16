@@ -2,6 +2,7 @@ const errors = require("../controllers/errorController")
 const bcrypt = require("bcrypt")
 const userModel = require("../models/user")
 const authModel = require("../models/auth")
+const postModel = require("../")
 const FB = require('fb');
 // validation
 // creation here
@@ -32,6 +33,7 @@ exports.createLocalUser = (inputs) => {
                  console.log("data",data)
                  inputs.refreshToken = refreshToken
                  userModel.insertUser(inputs).then((user)=>{
+                    console.log("user",user.insertId)
                     resolve(data);
                  }).catch((err) =>{
                     reject(err);
@@ -179,6 +181,11 @@ exports.checkFacebook = (accessToken,email) => {
       }
     });
   })
+}
 
+// Post Create
+exports.addPost = (inputs) =>{
+   return new Promise((resolve,reject) =>{
 
+   })
 }

@@ -8,14 +8,15 @@ exports.verifyJWT = (req,res,next) =>{
       if(req.headers["authorization"]){
         var token = req.headers["authorization"].split(" ");
         jwt.verify(token[1], config.CERT, function(err, decoded) {
+              console.log("DECODED",decoded)
               if(err){
                 //console.log(err);
                 res.status(400).json({"data": [], "error": err});
                 res.send();
               }else{
-
                 if(decoded.type === "access"){
                   req.data = decoded;
+                  console.log("DECODED",decoded)
                   next();
                 }else{
                   res.status(400).json({"data": [], "error": "Bad/Wrong token used"});
