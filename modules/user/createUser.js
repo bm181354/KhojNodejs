@@ -67,9 +67,11 @@ module.exports = (router) => {
                         //TODO: id instead of req.body.email
                         userController.emailtoID(req.body.email).then((id)=>{
                           authController.validateRefreshToken(id,(result)=>{
+                              // error here
                               if(result.result){
                                 apiResponse(res,[result]);
                               }else{
+                                // error here
                                 apiResponse(res,null,result.error,result.code);
                               }
                           })
