@@ -69,7 +69,6 @@ module.exports = (router) => {
                         userController.emailtoID(req.body.email).then((id)=>{
                           console.log("createUser /api/v1/user", id)
                           authController.validateRefreshToken(id,(result)=>{
-
                               if(result.result){
                                 apiResponse(res,[result]);
                               }else{

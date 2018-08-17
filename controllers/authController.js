@@ -141,7 +141,8 @@ exports.validateUserByEmail = (email, password, seecret, callback) => {
                       authModel.createAccessToken(refreshToken).then((accessToken)=>{
                         result.result = true;
                         user[0].accessToken = accessToken
-                        user[0].refreshToken = "bearer "+refreshToken
+                        user[0].refreshToken = refreshToken
+                        console.log("USER IS THERE: ",user[0])
                         result.data = user;
                         result.accessToken = accessToken
                         console.log("login-accesstoken",accessToken)

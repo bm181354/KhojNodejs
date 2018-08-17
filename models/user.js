@@ -226,6 +226,7 @@ exports.updateRefreshToken = (refreshToken,id) => {
 
 }
 
+// send data to 
 exports.getIDFromEmail = (email) =>{
   return new Promise((resolve, reject)=>{
     globals.getConn((err,conn) => {

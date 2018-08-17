@@ -56,7 +56,7 @@ exports.verifyJWT = (req,res,next) =>{
         const token = req.headers["authorization"].split(" ");
         jwt.verify(token[1], config.CERT, function(err, decoded) {
               if(err){
-                res.status(417).json({"data": [], "error": err});
+                res.status(401).json({"data": [], "error": err});
                 res.send();
               }else{
                 if(decoded.type === "access"){
