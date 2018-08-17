@@ -3,7 +3,7 @@
 const jwt = require("jsonwebtoken")
 const error = require('../controllers/errorController');
 const config = require("../config/config");
- const jwtToken = require("../controllers/jwtController");
+const jwtToken = require("../controllers/jwtController");
 
 
  //TODO:- check for validity of refreshToken and id

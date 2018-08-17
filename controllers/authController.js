@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const userModel = require("../models/user");
 const errors = require("../controllers/errorController");
 const authModel = require("../models/auth");
+const jwtToken = require("../controllers/jwtController");
 
 //
 
@@ -49,10 +50,11 @@ exports.validateRefreshToken = (id,callback) => {
        // check validity of refresh token []
        // create access token [X]
        // resolve({accessToken,RefreshToken})[X]
-       console.log("GOT THE validateRefreshToken",data)
-
+       console.log("GOT THE validateRefreshToken from userModel.getRefreshToken",data)
+       console.log(data)
        //TODO:- create a validator of JWT {CHECKS}
-       var {data_,isValidate} = verifyAccessToken(data.refreshToken)
+       var {data_,isValidate} = jwtToken.verifyAccessToken(data.refreshToken)
+       console.log("authModel.validateRefreshToken",isValidate)
        if(isValidate == false){
          // refresh token is not good anymore
              authModel.createRefreshToken(id,null).then(({data,refreshToken})=>{
@@ -69,6 +71,7 @@ exports.validateRefreshToken = (id,callback) => {
                    callback(result);
                  })
              }).catch((err)=>{
+               console.log(err)
                result.error = errors.masterTokenGenerationError;
                result.result = false;
                result.code = result.error.code;
@@ -93,6 +96,7 @@ exports.validateRefreshToken = (id,callback) => {
        }
     }).catch((err)=>{
       // can't get refresh_token
+      console.log(err)
       result.error = errors.notFound;
       result.result = false;
       result.code = result.error.code;

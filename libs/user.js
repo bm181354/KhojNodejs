@@ -66,18 +66,24 @@ exports.create3partyUser = (user) => {
     if (user.accessToken === undefined || typeof user.accessToken !== "string") {
             reject(errors.paramCorrupted);
         }
-        userModel.insertUser(user).then(() => {
-            authModel.createRefreshToken(user.insertId,user.accessToken).then(({data,refreshToken})=>{
-              userModel.updateRefreshToken(refreshToken,user.insertId).then((newCheck)=>{
+        userModel.insertUser(user).then((dbData) => {
+           console.log("DATA", dbData)
+            authModel.createRefreshToken(dbData.insertId,user.accessToken).then(({data,refreshToken})=>{
+              console.log("refreshToken", refreshToken,dbData.insertId)
+              userModel.updateRefreshToken(refreshToken,dbData.insertId).then((newCheck)=>{
+                      console.log("newCheck ",newCheck)
                       data.refresh_token = refreshToken;
                       resolve(data);
                   }).catch((err)=>{
+                      console.log(err)
                       reject(err);
                   })
               }).catch((err)=>{
+                console.log(err)
                 reject(err);
               });//createRefreshToken
           }).catch( (dbError) => {
+                console.log(err)
                 reject(dbError);
           });
 
@@ -193,9 +199,12 @@ exports.checkFacebook = (accessToken,email) => {
 //getID from email
 exports.emailtoID = (email) =>{
    return new Promise((resolve,reject)=>{
+      console.log("lib/user.js emailtoID", email)
       userModel.getIDFromEmail(email).then((data)=>{
+        console.log("lib/user.js emailtoID userModel.getIDFromEmail", data)
         resolve(data.id)
       }).catch((err)=>{
+        console.log("ERROR lib/user.js emailtoID", data.id)
         reject(err)
       })
    })

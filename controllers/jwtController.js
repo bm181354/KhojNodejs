@@ -82,11 +82,13 @@ exports.verifyJWT = (req,res,next) =>{
 // Actual should be verifyRefreshToken
 exports.verifyAccessToken = (refreshToken) =>{
   return jwt.verify(refreshToken, config.CERT, function(err, decoded) {
-        console.log("DECODED",decoded)
+
         if(err){
           console.log(err,refreshToken)
+          console.log("verifyAccessToken")
           return {id:null,isSuccess:false}
         }
+        console.log("DECODED",decoded)
         if(decoded.type === "master"){
            console.log("DECODED",1)
            return {id:decoded.id,isSuccess:true}
