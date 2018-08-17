@@ -2,7 +2,7 @@ const errors = require("../controllers/errorController")
 const bcrypt = require("bcrypt")
 const userModel = require("../models/user")
 const authModel = require("../models/auth")
-const postModel = require("../")
+const postModel = require("../models/post")
 const FB = require('fb');
 // validation
 // creation here
@@ -31,7 +31,7 @@ exports.createLocalUser = (inputs) => {
              userModel.insertUser(inputs).then((user)=>{
                     authModel.createRefreshToken(user.insertId,authAccessToken).then(({data,refreshToken})=>{
                         userModel.updateRefreshToken(refreshToken,user.insertId).then((newCheck)=>{
-                            data.refresh_token = "bearer " + refreshToken;
+                            data.refresh_token = refreshToken;
                             resolve(data);
                         }).catch((err)=>{
                             reject(err);
@@ -69,7 +69,7 @@ exports.create3partyUser = (user) => {
         userModel.insertUser(user).then(() => {
             authModel.createRefreshToken(user.insertId,user.accessToken).then(({data,refreshToken})=>{
               userModel.updateRefreshToken(refreshToken,user.insertId).then((newCheck)=>{
-                      data.refresh_token = "bearer " + refreshToken;
+                      data.refresh_token = refreshToken;
                       resolve(data);
                   }).catch((err)=>{
                       reject(err);
@@ -144,7 +144,6 @@ exports.checkDuplicateEmail = (email) =>{
     });
 }
 
-
 exports.checkDuplicateUsername = (username) =>{
   return new Promise((resolve,reject)=>{
     userModel.findUserByUsername(username).then((user) => {
@@ -203,8 +202,12 @@ exports.emailtoID = (email) =>{
 }
 
 // Post Create
-exports.addPost = (inputs) =>{
+exports.addPost = (req) =>{
    return new Promise((resolve,reject) =>{
-
+     postModel.addPostDB(req).then((data)=>{
+       resolve(data)
+     }).catch((err)=>{
+       reject(err)
+     })
    })
 }

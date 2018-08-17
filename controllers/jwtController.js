@@ -1,22 +1,66 @@
 const  jwt = require('jsonwebtoken'),
         config = require("../config/config"),
+        authModel = require("../models/auth"),
+        userModel = require("../models/user"),
         errors = require("../controllers/errorController");
 
 
+
+// expires in 15 minutes
+// doesn't go into database
+// for 301 error
+//TODO:- check for validity of refreshToken and id
+// refreshToken body should consists of id
+exports.createNewAccessToken = (req) => {
+  "use strict";
+  // get refreshToken from userID
+  // create new JWT and send to the user
+  return new Promise((resolve,reject) => {
+    try{
+      console.log(req.headers["authorization"])
+      if(typeof(req.headers["authorization"]) !== "undefined" && req.headers["authorization"]){
+        const token = req.headers["authorization"].split(" ");
+             var {id,isSuccess} = this.verifyAccessToken(token[1])
+             console.log(isSuccess)
+             if(isSuccess){
+               console.log("createAccessToken:Success")
+                authModel.createRefreshToken(id,null).then(({data,refreshToken})=>{
+                  userModel.updateRefreshToken(refreshToken,id).then((newCheck)=>{
+                          resolve({data,refreshToken})
+                      }).catch((err)=>{
+                          reject(error.defaultDbError)
+                      })
+                }).catch((err)=>{
+                  reject(error.defaultDbError)
+                })
+             }else{
+                console.log("createAccessToken:fail")
+                reject(error.accessTokenGenerationError)
+             }
+
+        }else{
+          reject(error.notAuthorized)
+        }
+
+    }catch (err){
+      console.log("also",err)
+      reject(error.accessTokenGenerationError)
+    }
+  })
+}
+
 exports.verifyJWT = (req,res,next) =>{
     try{
-      if(req.headers["authorization"]){
-        var token = req.headers["authorization"].split(" ");
+      console.log("tokenBeforeDecoded",typeof(req.headers["authorization"]))
+      if(typeof(req.headers["authorization"]) !== "undefined" && req.headers["authorization"]){
+        const token = req.headers["authorization"].split(" ");
         jwt.verify(token[1], config.CERT, function(err, decoded) {
-              console.log("DECODED",decoded)
               if(err){
-                //console.log(err);
-                res.status(400).json({"data": [], "error": err});
+                res.status(417).json({"data": [], "error": err});
                 res.send();
               }else{
                 if(decoded.type === "access"){
                   req.data = decoded;
-                  console.log("DECODED",decoded)
                   next();
                 }else{
                   res.status(400).json({"data": [], "error": "Bad/Wrong token used"});
@@ -29,12 +73,13 @@ exports.verifyJWT = (req,res,next) =>{
         res.send();
       }
     }catch(err){
-      res.status(err.code).json({"data": [], "error": err});
+      res.status(400).json({"data": [], "error": "Bad request"});
       res.send();
     }
 }
 
 // FOR validate purpose
+// Actual should be verifyRefreshToken
 exports.verifyAccessToken = (refreshToken) =>{
   return jwt.verify(refreshToken, config.CERT, function(err, decoded) {
         console.log("DECODED",decoded)
@@ -51,6 +96,8 @@ exports.verifyAccessToken = (refreshToken) =>{
         }
     });
 }
+
+
 // raw decoded data
 exports.decodeJWT = (token) =>{
   return new Promise((resolve,reject)=>{

@@ -27,5 +27,8 @@
     "nodemailer": "^4.6.7",
     "nodemon": "^1.18.3",
     "promise-mysql": "^3.3.1"
+  },
+  "devDependencies": {
+    "supertest": "^3.1.0"
   }
 }

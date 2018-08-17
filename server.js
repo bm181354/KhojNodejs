@@ -5,13 +5,13 @@
  const express = require("express");
  const globals = require("./config/globals");
  const jwtToken = require("./controllers/jwtController");
+
  //const Ddos = require('ddos');  ---*
 /* For testing purpose remove the code
 *  resets every seconds
 */
  //var ddos = new Ddos({burst:10, limit:15}) //---*
  var app = express();
-
 
  let bodyParser = require("body-parser");
  router = express.Router();
@@ -50,21 +50,23 @@ app.use(bodyParser.json());
     }
 
  });
- // only for post
- //app.use(jwtToken.verifyJWT);
+
  // doesn't work in localhost
  // app.use(ddos.express); //---*
  // /** *****************************  AUTH MODULE FUNCTIONS *************************/
  //
+
  app.use("/",require("./modules/auth/login.js")(router)) // login
  //app.use("/",require("./modules/auth/refreshToken.js")(router))
-
  /** *****************************  USER MODULE FUNCTIONS *************************/
  app.use("/", require("./modules/user/createUser.js")(router)); // Create new user
  /** *****************************  GET MODULE FUNCTIONS *************************/
 
  /** *****************************  JWT MODULE FUNCTIONS *************************/
-
+ app.use("/",require("./modules/auth/refreshToken.js")(router));
+ router.use(jwtToken.verifyJWT) // only for post
+  /** *****************************  POST MODULE FUNCTIONS *************************/
+ app.use("/",require('./modules/post/createPost.js')(router));
 
 
  module.exports = app

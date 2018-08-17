@@ -5,35 +5,32 @@ const error = require('../controllers/errorController');
 const config = require("../config/config");
  const jwtToken = require("../controllers/jwtController");
 
-// expires in 15 minutes
-// doesn't go into database
-// for 301 error
-//TODO:- check for validity of refreshToken and id
-// refreshToken body should consists of id
-exports.createAccessToken = (refreshToken) => {
-  "use strict";
-  // get refreshToken from userID
-  // create new JWT and send to the user
-  return new Promise((resolve,reject) => {
-    try{
-       var {id,isSuccess} = jwtToken.verifyAccessToken(refreshToken)
-       console.log(isSuccess)
-       if(isSuccess){
-         console.log("createAccessToken:Success")
-          var  accessToken = jwt.sign({id:id,type:"access", iat: Math.floor(Date.now() / 1000) - 30
-          }, config.CERT,{expiresIn: '1h'});
-          resolve("bearer "+ accessToken)
-       }else{
-          console.log("createAccessToken:fail")
-          reject(error.accessTokenGenerationError)
-       }
-    }catch (err){
-      console.log("also",err)
-      reject(error.accessTokenGenerationError)
-    }
-  })
 
-}
+ //TODO:- check for validity of refreshToken and id
+ // refreshToken body should consists of id
+ exports.createAccessToken = (refreshToken) => {
+   "use strict";
+   // get refreshToken from userID
+   // create new JWT and send to the user
+   return new Promise((resolve,reject) => {
+     try{
+        var {id,isSuccess} = jwtToken.verifyAccessToken(refreshToken)
+        console.log(isSuccess)
+        if(isSuccess){
+          console.log("createAccessToken:Success")
+           var  accessToken = jwt.sign({id:id,type:"access", iat: Math.floor(Date.now() / 1000) - 30
+           }, config.CERT,{expiresIn: '1h'});
+           resolve(accessToken)
+        }else{
+           console.log("createAccessToken:fail")
+           reject(error.accessTokenGenerationError)
+        }
+     }catch (err){
+       console.log("also",err)
+       reject(error.accessTokenGenerationError)
+     }
+   })
+ }
 // expires in 3 days
 // ONLY through the mail they will get userIDToken
 exports.createRefreshToken = (id,authAccessToken) => {
@@ -69,5 +66,3 @@ exports.createRefreshToken = (id,authAccessToken) => {
 
       });
 }
-
-exports.createAccessToken = this.createAccessToken
