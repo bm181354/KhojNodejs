@@ -103,7 +103,7 @@ exports.getRefreshToken = (id) =>{
              // console.log(JSON.parse((rows))); // json file
              conn.release();
              var data = JSON.parse(JSON.stringify(rows))
-             resolve(data);  // if found
+             resolve(data[0]);  // if found
              //console.log(mysqlDB)
           }).catch((err) => {
              console.log("Error username")
@@ -203,6 +203,7 @@ exports.updateRefreshToken = (refreshToken,id) => {
                     }
                      var param = [refreshToken,id]
                      // query that connection for the user
+                     console.log("param: ", param)
                      conn.query('UPDATE USERS SET refreshToken=? WHERE id = ?',param).then(function(rows){
                         // console.log(JSON.parse((rows))); // json file
                         conn.release();
@@ -239,7 +240,7 @@ exports.getIDFromEmail = (email) =>{
                 // console.log(JSON.parse((rows))); // json file
                 conn.release();
                 var data = JSON.parse(JSON.stringify(rows))
-                resolve(data);  // if found
+                resolve(data[0]);  // if found
                 //console.log(mysqlDB)
              }).catch((err) => {
                 console.log("Error id")
