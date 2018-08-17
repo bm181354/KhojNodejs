@@ -81,6 +81,7 @@ exports.verifyJWT = (req,res,next) =>{
 // FOR validate purpose
 // Actual should be verifyRefreshToken
 exports.verifyAccessToken = (refreshToken) =>{
+
   return jwt.verify(refreshToken, config.CERT, function(err, decoded) {
 
         if(err){
