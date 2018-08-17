@@ -3,6 +3,8 @@ const userModel = require("../models/user");
 const errors = require("../controllers/errorController");
 const authModel = require("../models/auth");
 
+//
+
 
 // validation of user with bcrypt
 //3
@@ -48,51 +50,47 @@ exports.validateRefreshToken = (id,callback) => {
        // create access token [X]
        // resolve({accessToken,RefreshToken})[X]
        console.log("GOT THE validateRefreshToken",data)
-       //TODO:- create a validator of JWT
-       var isValidate = false // change this
 
+       //TODO:- create a validator of JWT {CHECKS}
+       var {data_,isValidate} = verifyAccessToken(data.refreshToken)
        if(isValidate == false){
          // refresh token is not good anymore
-         authModel.createRefreshToken(id,null).then(({data,refreshToken})=>{
-             userModel.updateRefreshToken(id,refreshToken).then(()=>{
-               result.result = true;
-               result.accessToken = data.access_token;
-               result.refreshToken = refreshToken
-               callback(result);
+             authModel.createRefreshToken(id,null).then(({data,refreshToken})=>{
+                 userModel.updateRefreshToken(id,refreshToken).then(()=>{
+                   result.result = true;
+                   result.accessToken = data.access_token;
+                   result.refreshToken = refreshToken
+                   callback(result);
+                 }).catch((err)=>{
+                   console.log("validateRefreshToken")
+                   result.error = err;
+                   result.result = false;
+                   result.code = result.error.code;
+                   callback(result);
+                 })
              }).catch((err)=>{
-               console.log("validateRefreshToken")
-               result.error = err;
+               result.error = errors.masterTokenGenerationError;
                result.result = false;
                result.code = result.error.code;
                callback(result);
              })
-         }).catch((err)=>{
-           result.error = errors.masterTokenGenerationError;
-           result.result = false;
-           result.code = result.error.code;
-           callback(result);
-         })
 
        }else{
           // refresh token is not good anymore // no need to access db
-          console.log("email,data.refreshToken",email,data.refreshToken)
-          authModel.createAccessToken(email,data.refreshToken).then((accessToken)=>{
-            result.result = true;
-            result.accessToken = accessToken;
-            result.refreshToken = data.refreshToken
-            callback(result);
+              console.log("Data.refreshToken",data.refreshToken)
+              authModel.createAccessToken(data.refreshToken).then((accessToken)=>{
+                result.result = true;
+                result.accessToken = accessToken;
+                result.refreshToken = data.refreshToken
+                callback(result);
 
-          }).catch((err)=>{
-            result.error = errors.accessTokenGenerationError;
-            result.result = false;
-            result.code = result.error.code;
-            callback(result);
-          })
-
-
+              }).catch((err)=>{
+                result.error = errors.accessTokenGenerationError;
+                result.result = false;
+                result.code = result.error.code;
+                callback(result);
+              })
        }
-
-
     }).catch((err)=>{
       // can't get refresh_token
       result.error = errors.notFound;
