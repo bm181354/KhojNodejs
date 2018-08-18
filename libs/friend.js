@@ -8,6 +8,9 @@ exports.getPost = (state,city,category,subcategory) =>{
     return new Promise((resolve,reject)=>{
       if((state || city) && (category || subcategory)){
          postModel.getPostDB(state,city,category,subcategory).then((data)=>{
+           if((data.length) < 1){
+             reject(errors.notFound)
+           }
             resolve(data)
          }).catch((err)=>{
             reject(err)
