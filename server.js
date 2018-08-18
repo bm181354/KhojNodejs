@@ -61,6 +61,7 @@ app.use(bodyParser.json());
  /** *****************************  USER MODULE FUNCTIONS *************************/
  app.use("/", require("./modules/user/createUser.js")(router)); // Create new user
  /** *****************************  GET MODULE FUNCTIONS *************************/
+  app.use("/",require("./modules/post/getPosts.js")(router));
   app.use("/",require("./modules/post/getPost.js")(router));
  /** *****************************  JWT MODULE FUNCTIONS *************************/
  app.use("/",require("./modules/auth/refreshToken.js")(router));

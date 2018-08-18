@@ -69,3 +69,33 @@ exports.getPostDB = (state,city,category,subcategory) =>{
       })
 
 }
+
+exports.getPostParticularDB = (id)=>{
+
+  return new Promise((resolve,reject)=>{
+    globals.getConn((err,conn) => {
+      try{
+           if(err){
+              conn.release();
+              reject(err)
+            }else{
+                var parameter = [id]
+                console.log("parameter",parameter)
+                conn.query('SELECT * FROM POST WHERE id = ?',parameter).then((rows)=>{
+                   console.log(rows)
+                   conn.release();
+                   var data = JSON.parse(JSON.stringify(rows))
+                   resolve(data);  // if found
+                }).catch((err) => {
+                   conn.release();
+                   reject(err);   // if user not found
+                });
+           }
+  //
+       }catch (err){
+           reject(errors.defaultDbError)
+         }//
+     })
+   })
+
+}

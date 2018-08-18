@@ -28,3 +28,29 @@ exports.getPost = (state,location,category,subcategory) =>{
       }
     })
 }
+
+
+exports.getParticularPost = (id) =>{
+    return new Promise((resolve,reject)=>{
+      if(id){
+        // query here
+        //TODO: put data inside the resolve
+        //req.query.state,req.query.city,param.category,param.subcategory
+         //state,city,category,subcategory
+         //"MA",null,"IT",null
+         postModel.getPostParticularDB(id).then((data)=>{
+            resolve(data)
+         }).catch((err)=>{
+            reject(err)
+         })
+      }else{
+        //TODO:remove this and comment
+        postModel.getPostParticularDB(id).then((data)=>{
+           resolve(data)
+        }).catch((err)=>{
+           reject(err)
+        })
+        //reject(errors.paramMissing)
+      }
+    })
+}
