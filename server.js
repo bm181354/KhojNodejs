@@ -16,7 +16,7 @@
  let bodyParser = require("body-parser");
  router = express.Router();
 
-
+app.disable('etag');
 app.use(bodyParser.json());
  app.use((req, res, next) => {
     "use strict";

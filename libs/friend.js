@@ -35,20 +35,15 @@ exports.getParticularPost = (id) =>{
          postModel.getPostParticularDB(id).then((data)=>{
 
            if((data.length) < 1){
-             reject(errors.notFound)
-           }
-            resolve(data)
+             return reject(errors.notFound)
+           }else{
+            return resolve(data)
+          }
          }).catch((err)=>{
-            reject(err)
+            return reject(err)
          })
       }else{
-        // //TODO:remove this and comment
-        // postModel.getPostParticularDB(id).then((data)=>{
-        //    resolve(data)
-        // }).catch((err)=>{
-        //    reject(err)
-        // })
-        reject(errors.paramMissing)
+        return reject(errors.paramMissing)
       }
     })
 }
