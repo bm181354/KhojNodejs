@@ -12,6 +12,7 @@ module.exports = (router) => {
 
          //console.log(userResponse)
          if(userResponse.result){
+            delete userResponse.data[0].userPassword;
             console.log("login.js, authController.validateUserByEmail",userResponse.result)
             apiResponse(res, userResponse.data, null, null);
           }else{

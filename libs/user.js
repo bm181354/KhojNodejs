@@ -202,7 +202,7 @@ exports.emailtoID = (email) =>{
       console.log("lib/user.js emailtoID", email)
       userModel.getIDFromEmail(email).then((data)=>{
         console.log("lib/user.js emailtoID userModel.getIDFromEmail", data)
-        resolve(data.id)
+        resolve(data)
       }).catch((err)=>{
         console.log("ERROR lib/user.js emailtoID", data.id)
         reject(err)

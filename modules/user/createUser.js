@@ -70,6 +70,10 @@ module.exports = (router) => {
                           console.log("createUser /api/v1/user", data.id)
                           authController.validateRefreshToken(data.id,(result)=>{
                               if(result.result){
+                                result.id = data.id
+                                result.name = data.name
+                                result.email = data.email
+                                result.username = data.username
                                 apiResponse(res,[result]);
                               }else{
                                 // error here

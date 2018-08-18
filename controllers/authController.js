@@ -45,7 +45,7 @@ let validateLoginByType = (userType, password, dbPassword,/* dbUserSeecret, user
 exports.validateRefreshToken = (id,callback) => {
   "use strict";
     let result = {}
-
+    console.log("idsuppose",id)
     userModel.getRefreshToken(id).then((data)=>{
        // check validity of refresh token []
        // create access token [X]

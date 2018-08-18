@@ -241,7 +241,7 @@ exports.getIDFromEmail = (email) =>{
                 // console.log(JSON.parse((rows))); // json file
                 conn.release();
                 var data = JSON.parse(JSON.stringify(rows))
-                resolve(data);  // if found
+                resolve(data[0]);  // if found
                 //console.log(mysqlDB)
              }).catch((err) => {
                 console.log("Error id")
