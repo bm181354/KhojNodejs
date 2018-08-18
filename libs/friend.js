@@ -30,16 +30,23 @@ Get the particular post from the id
 */
 
 exports.getParticularPost = (id) =>{
+
+
     return new Promise((resolve,reject)=>{
+
       if(id){
+
          postModel.getPostParticularDB(id).then((data)=>{
 
            if((data.length) < 1){
-             reject(errors.notFound)
+             console.log("howmany")
+              reject(errors.notFound)
            }
+
             resolve(data)
          }).catch((err)=>{
-            reject(err)
+            console.log("howmany")
+             reject(err)
          })
       }else{
         // //TODO:remove this and comment
@@ -48,6 +55,7 @@ exports.getParticularPost = (id) =>{
         // }).catch((err)=>{
         //    reject(err)
         // })
+        console.log("howmany")
         reject(errors.paramMissing)
       }
     })

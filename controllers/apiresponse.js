@@ -3,6 +3,8 @@
 */
 module.exports = (response, data, error, code) => {
     "use strict";
+
+    
     if (!response.headersSent) {
 
 

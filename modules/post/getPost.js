@@ -4,15 +4,23 @@ const friendController = require("../../libs/friend.js");
 module.exports = (router) =>{
   "use strict";
   router.get("/api/v1/post/:id",(req,res)=>{
+
+
       try{
+             console.log("oneonly")
             var params = req.params
             // create fake data for query
             friendController.getParticularPost(params.id).then((data)=>{
-                  apiResponse(res,data)
+              console.log("here1")
+              console.log(req.method)
+                 apiResponse(res,data)
               }).catch((err)=>{
+                console.log("here2")
+                  console.log(req.method) 
                   apiResponse(res,null,err,err.code)
               });
       }catch(err){
+
           apiResponse(res, null, err, err.code);
       }
 
