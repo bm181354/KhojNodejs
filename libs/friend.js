@@ -39,13 +39,13 @@ exports.getParticularPost = (id) =>{
          postModel.getPostParticularDB(id).then((data)=>{
 
            if((data.length) < 1){
-             console.log("howmany")
+            
               reject(errors.notFound)
            }
 
             resolve(data)
          }).catch((err)=>{
-            console.log("howmany")
+
              reject(err)
          })
       }else{
@@ -55,7 +55,7 @@ exports.getParticularPost = (id) =>{
         // }).catch((err)=>{
         //    reject(err)
         // })
-        console.log("howmany")
+
         reject(errors.paramMissing)
       }
     })
