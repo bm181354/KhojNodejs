@@ -10,12 +10,12 @@ const request = require("supertest"),
     TEST : post("/api/v1/createpost")
     +create data with valid Access Token
 */
-describe("CreatePost Integratioin test", function(){
+describe("$CreatePost", function(){
 
   // runs before every test (it)
   // setup in javascript analogous
          beforeEach(function(){
-           // this code expire so be careful
+           // this token will expire in 3hr so be careful
            this.Accesstoken = config.FAKE_ACCESSTOKEN_TEST
             this.userData = {
                "description":"This is a check",
@@ -26,7 +26,7 @@ describe("CreatePost Integratioin test", function(){
                 "city":"Revere",
                 "state":"MA"
                }
-            // this.skip();
+            this.skip();
 
          });
 
@@ -47,7 +47,7 @@ describe("CreatePost Integratioin test", function(){
         })
 })
 //(************************************************************************)
-describe("GET post", function(done){
+describe("$GET post data from database", function(done){
       beforeEach(function(){
           // this.skip();
           this.params ={ state: 'MA', city:'Revere'}
@@ -76,11 +76,8 @@ describe("GET post", function(done){
 })
 //(************************************************************************)
 //MARK:- Token related checks
-describe("NO Token check", function(done){
+describe("$NO Token check", function(done){
   "use strict";
-  beforeEach(function(){
-
-  })
 
   beforeEach(function(){
     // this code expire so be careful

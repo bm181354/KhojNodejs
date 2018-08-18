@@ -18,11 +18,22 @@ exports.getPost = (state,city,category,subcategory) =>{
     })
 }
 
+/*
+Get the particular post from the id
+@param {integer} id -  post id
+@returns {Promise}:
+         - resolve : returns data
+         - reject : rreturns error
+*/
 
 exports.getParticularPost = (id) =>{
     return new Promise((resolve,reject)=>{
       if(id){
          postModel.getPostParticularDB(id).then((data)=>{
+
+           if(len(data)<1){
+             reject(errors.notFound)
+           }
             resolve(data)
          }).catch((err)=>{
             reject(err)
