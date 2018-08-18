@@ -66,9 +66,9 @@ module.exports = (router) => {
                       userController.checkFacebook(req.body.accessToken,req.body.email).then((info)=>{
                         //TODO: id instead of req.body.email
                           console.log("createUser email /api/v1/user",req.body.email)
-                        userController.emailtoID(req.body.email).then((id)=>{
-                          console.log("createUser /api/v1/user", id)
-                          authController.validateRefreshToken(id,(result)=>{
+                        userController.emailtoID(req.body.email).then((data)=>{
+                          console.log("createUser /api/v1/user", data.id)
+                          authController.validateRefreshToken(data.id,(result)=>{
                               if(result.result){
                                 apiResponse(res,[result]);
                               }else{

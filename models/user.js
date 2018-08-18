@@ -226,7 +226,7 @@ exports.updateRefreshToken = (refreshToken,id) => {
 
 }
 
-// send data to 
+// send data to
 exports.getIDFromEmail = (email) =>{
   return new Promise((resolve, reject)=>{
     globals.getConn((err,conn) => {
@@ -237,11 +237,11 @@ exports.getIDFromEmail = (email) =>{
               reject(err)
             }
             var param = [email]
-            conn.query('SELECT id from USERS WHERE email=?',param).then(function(rows){
+            conn.query('SELECT id,name,username,email from USERS WHERE email=?',param).then(function(rows){
                 // console.log(JSON.parse((rows))); // json file
                 conn.release();
                 var data = JSON.parse(JSON.stringify(rows))
-                resolve(data[0]);  // if found
+                resolve(data);  // if found
                 //console.log(mysqlDB)
              }).catch((err) => {
                 console.log("Error id")
