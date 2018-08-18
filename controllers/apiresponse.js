@@ -4,8 +4,14 @@
 module.exports = (response, data, error, code) => {
     "use strict";
     if (!response.headersSent) {
-        console.log("resErr", error);
-        console.log("resData", data);
+
+
+        if(data && !error){
+          console.log("resData", data);
+        }else{
+          console.log("resErr", error);
+        }
+
         error = error || null;
         code = code || 200;
         if (code > 505) {

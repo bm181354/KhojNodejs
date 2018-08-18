@@ -29,6 +29,7 @@
     "promise-mysql": "^3.3.1"
   },
   "devDependencies": {
+    "rewire": "^4.0.1",
     "supertest": "^3.1.0"
   }
 }

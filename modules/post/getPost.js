@@ -6,12 +6,6 @@ module.exports = (router) =>{
   router.get("/api/v1/post/:id",(req,res)=>{
       try{
             var params = req.params
-            console.log("check",params.id)
-
-            //TODO:- change parameter
-            // req.query.state
-            //req.params.subcatergory
-
             // create fake data for query
             friendController.getParticularPost(params.id).then((data)=>{
                   apiResponse(res,data)

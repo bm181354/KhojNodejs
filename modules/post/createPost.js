@@ -9,10 +9,7 @@ module.exports = (router) => {
   "use strict";
   router.post("/api/v1/createpost",(req,res)=>{
     try{
-      // var id = req.data
-      //  console.log("ID",req.data.id)
-      //  USERS_id
-      if(req.body.description && req.body.title && (req.body.category  && req.body.subcategory) && req.body.country && (req.body.city && req.body.state)){
+      if(req.body.description && req.body.title && (req.body.category  && req.body.subcategory) && req.body.country && (req.body.city || req.body.state)){
            userController.addPost(req).then((data)=>{
              apiResponse(res,[data]);
            }).catch((err)=>{

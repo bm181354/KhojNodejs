@@ -37,12 +37,8 @@ app.use(bodyParser.json());
     if (globals.getDatabase() === undefined) {
 
         globals.initDB().then(() => {
-            console.log("Database init")
             next();
         }).catch((err) => {
-            console.log(err);
-            //apiResponse(res, null, errors.defaultDbError, errors.defaultDbError.code);
-            console.log("Database can't be init")
             return false;
         });
     } else {

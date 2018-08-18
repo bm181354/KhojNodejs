@@ -50,9 +50,7 @@ exports.getPostDB = (state,city,category,subcategory) =>{
                  reject(err)
                }else{
                    var parameter = [state,city,category,subcategory,7]
-                   console.log("parameter",parameter)
                    conn.query('SELECT * FROM POST WHERE (state = ? or city = ? ) and (category = ? or subcategory = ?) ORDER BY id DESC LIMIT 7 OFFSET ?',parameter).then((rows)=>{
-                      console.log(rows)
                       conn.release();
                       var data = JSON.parse(JSON.stringify(rows))
                       resolve(data);  // if found
@@ -82,7 +80,6 @@ exports.getPostParticularDB = (id)=>{
                 var parameter = [id]
                 console.log("parameter",parameter)
                 conn.query('SELECT * FROM POST WHERE id = ?',parameter).then((rows)=>{
-                   console.log(rows)
                    conn.release();
                    var data = JSON.parse(JSON.stringify(rows))
                    resolve(data);  // if found

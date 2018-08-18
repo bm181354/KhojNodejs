@@ -5,15 +5,9 @@ module.exports = (router) =>{
   "use strict";
   router.get("/api/v1/posts/:category?/:subcatergory?",(req,res)=>{
      try{
-            var param = req.param
-            console.log(param)
-
-            //TODO:- change parameter
-            // req.query.state
-            //req.param.subcatergory
-
-            // create fake data for query
-            friendController.getPost("MA",null,null,"IT").then((data)=>{
+            var params = req.params
+            var query =  req.query
+            friendController.getPost(query.state,query.city,params.category,params.subcatergory).then((data)=>{
                   apiResponse(res,data)
               }).catch((err)=>{
                   apiResponse(res,null,err,err.code)

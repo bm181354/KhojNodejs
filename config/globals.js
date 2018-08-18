@@ -32,7 +32,7 @@ exports.initDB = () => {
 
    return new Promise((resolve, reject) => {
        mysqlDb.db().then(() => {
-        console.log("inside db")
+        
           resolve()
        }).catch((err) => {
        reject(err)
