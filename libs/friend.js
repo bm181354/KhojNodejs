@@ -31,7 +31,7 @@ exports.getParticularPost = (id) =>{
       if(id){
          postModel.getPostParticularDB(id).then((data)=>{
 
-           if(len(data)<1){
+           if((data.length) < 1){
              reject(errors.notFound)
            }
             resolve(data)
