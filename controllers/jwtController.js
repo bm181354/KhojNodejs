@@ -21,7 +21,6 @@ exports.createNewAccessToken = (req) => {
       if(typeof(req.headers["authorization"]) !== "undefined" && req.headers["authorization"]){
         const token = req.headers["authorization"].split(" ");
              var {id,isSuccess} = this.verifyAccessToken(token[1])
-             console.log(isSuccess)
              if(isSuccess){
                console.log("createAccessToken:Success")
                 authModel.createRefreshToken(id,null).then(({data,refreshToken})=>{
