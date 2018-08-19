@@ -8,11 +8,12 @@ module.exports = (router) =>{
             var params = req.params
             // create fake data for query
             friendController.getParticularPost(params.id).then((data)=>{
-                  apiResponse(res,data)
+                 apiResponse(res,data)
               }).catch((err)=>{
-                  apiResponse(res,null,err,err.code)
+                 apiResponse(res,null,err,err.code)
               });
       }catch(err){
+
           apiResponse(res, null, err, err.code);
       }
 

@@ -39,6 +39,7 @@ exports.getParticularPost = (id) =>{
          postModel.getPostParticularDB(id).then((data)=>{
 
            if((data.length) < 1){
+<<<<<<< HEAD
              return reject(errors.notFound)
            }else{
             return resolve(data)
@@ -48,6 +49,26 @@ exports.getParticularPost = (id) =>{
          })
       }else{
         return reject(errors.paramMissing)
+=======
+            
+              reject(errors.notFound)
+           }
+
+            resolve(data)
+         }).catch((err)=>{
+
+             reject(err)
+         })
+      }else{
+        // //TODO:remove this and comment
+        // postModel.getPostParticularDB(id).then((data)=>{
+        //    resolve(data)
+        // }).catch((err)=>{
+        //    reject(err)
+        // })
+
+        reject(errors.paramMissing)
+>>>>>>> 297d60fe5bd40408443b698b140915256e0fb872
       }
     })
 }

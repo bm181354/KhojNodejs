@@ -30,12 +30,8 @@ Get the particular post from the id
 */
 
 exports.getParticularPost = (id) =>{
-
-
     return new Promise((resolve,reject)=>{
-
       if(id){
-
          postModel.getPostParticularDB(id).then((data)=>{
 
            if((data.length) < 1){
