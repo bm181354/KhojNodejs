@@ -50,8 +50,14 @@ exports.getPostDB = (state,city,category,subcategory,offset,size) =>{
                  reject(err)
                }else{
                    var parameter = [state,city,category,subcategory,size+1,offset]
-                   console.log("BEFORE ",parameter)
-                   conn.query('SELECT * FROM POST WHERE (state = ? or city = ? ) and (category = ? or subcategory = ?) ORDER BY id DESC LIMIT ? OFFSET ?',parameter).then((rows)=>{
+                   if (subcategory){
+                     console.log("subcategory")
+                     var statement = 'SELECT * FROM POST WHERE (state = ? or city = ? ) and (category = ? and subcategory = ?) ORDER BY id DESC LIMIT ? OFFSET ?';
+                   }else{
+                     console.log("category")
+                     var statement = 'SELECT * FROM POST WHERE (state = ? or city = ? ) and (category = ? or subcategory = ?) ORDER BY id DESC LIMIT ? OFFSET ?';
+                   }
+                   conn.query(statement,parameter).then((rows)=>{
                       console.log("result",rows)
                       conn.release();
                       var data = JSON.parse(JSON.stringify(rows))
