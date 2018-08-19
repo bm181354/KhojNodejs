@@ -66,3 +66,31 @@ exports.createRefreshToken = (id,authAccessToken) => {
 
       });
 }
+
+/*
+  Email Token generator
+  @param:  userRequest {JSON} that has send from front-end
+  @return: Promise with {STRING} Token if resolve
+*/
+
+exports.createEmailToken = (userRequest) =>{
+    return new Promise((resolve,reject)=>{
+        try{
+        const name = userRequest.name,
+              email = userRequest.email,
+              username = userRequest.username,
+              userType = userRequest.userType;
+
+        const  emailToken = jwt.sign({email:email,
+           type:userType,
+           username:username,
+           name:name,
+           iat: Math.floor(Date.now() / 1000) - 30
+        },config.CERT,{expiresIn: '1h'});
+
+        resolve(emailToken)
+      }catch(err){
+          reject(err)
+        }
+    })
+}

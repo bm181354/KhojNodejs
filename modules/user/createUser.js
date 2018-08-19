@@ -13,33 +13,27 @@ module.exports = (router) => {
       try{
            let userType = req.body.userType;
            let userEmail = req.body.email
-           console.log(userType)
-            //console.log(req)
-           //TODO:- add validation of some sort
-           //////
            if (userType === "custom") {
              userController.checkBaseParam(req).then(()=>{
                    // send email
                    //req.body needs to be signed and attached with email
                    // link with link to this route
-
-
                    // move this to api/v1/emailVerify/:token
-
-                   /******
-                   emailController.sendEmail(userEmail).then(()=>{
+                   emailController.sendEmail(req.body).then((info)=>{
                         console.log("EMailSent")
+                        // apiResponse(res, [info])
+                        res.end()
                    }).catch((err)=>{
                      apiResponse(res, null, err, err.code);
-                   })******/
+                   })
 
                    //TODO:- remove this and move to another route trigger when user click on email link
-                   userController.createLocalUser(req.body).then((data)=>{
-                         // instead of true send data variable
-                         apiResponse(res,[data]); // {"data":{"accessToken": "ASDGHBSADHU", "refreshToken":"Adfasdfadsf"}}
-                   }).catch((err) => {
-                        apiResponse(res, null, err, err.code);
-                   });
+                   // userController.createLocalUser(req.body).then((data)=>{
+                   //       // instead of true send data variable
+                   //       apiResponse(res,[data]); // {"data":{"accessToken": "ASDGHBSADHU", "refreshToken":"Adfasdfadsf"}}
+                   // }).catch((err) => {
+                   //      apiResponse(res, null, err, err.code);
+                   // });
                    // end
 
              }).catch((err)=>{

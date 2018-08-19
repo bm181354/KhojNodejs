@@ -5,12 +5,8 @@ const  jwt = require('jsonwebtoken'),
         errors = require("../controllers/errorController");
 
 
-
-// expires in 15 minutes
-// doesn't go into database
-// for 301 error
-//TODO:- check for validity of refreshToken and id
-// refreshToken body should consists of id
+//TODO:- check for validity of refreshToken and id [DONE]
+// refreshToken body should consists of id [DONE]
 exports.createNewAccessToken = (req) => {
   "use strict";
   // get refreshToken from userID

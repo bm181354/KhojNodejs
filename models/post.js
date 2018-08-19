@@ -40,8 +40,8 @@ exports.addPostDB = (req) =>{
 
 }
 
-//TODO:- change the 7 into offset 
-exports.getPostDB = (state,city,category,subcategory) =>{
+//TODO:- change the 7 into offset
+exports.getPostDB = (state,city,category,subcategory,offset,size) =>{
      return new Promise((resolve,reject)=>{
        globals.getConn((err,conn) => {
          try{
@@ -49,12 +49,15 @@ exports.getPostDB = (state,city,category,subcategory) =>{
                  conn.release();
                  reject(err)
                }else{
-                   var parameter = [state,city,category,subcategory,7]
-                   conn.query('SELECT * FROM POST WHERE (state = ? or city = ? ) and (category = ? or subcategory = ?) ORDER BY id DESC LIMIT 20 OFFSET ?',parameter).then((rows)=>{
+                   var parameter = [state,city,category,subcategory,size+1,offset]
+                   console.log("BEFORE ",parameter)
+                   conn.query('SELECT * FROM POST WHERE (state = ? or city = ? ) and (category = ? or subcategory = ?) ORDER BY id DESC LIMIT ? OFFSET ?',parameter).then((rows)=>{
+                      console.log("result",rows)
                       conn.release();
                       var data = JSON.parse(JSON.stringify(rows))
                       resolve(data);  // if found
                    }).catch((err) => {
+                      console.log("reult NONE")
                       conn.release();
                       reject(err);   // if user not found
                    });

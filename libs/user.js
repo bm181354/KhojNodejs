@@ -92,6 +92,7 @@ exports.create3partyUser = (user) => {
 
 //checker (2DB request)
 /**
+ *  
  * @param req object containing user info [.userType,.userEmail]
  * @param callback function with err and data param
  * @returns the promise object which encap either error/false or true

@@ -2,17 +2,9 @@ const
     config = require("../config/config"),
     errors = require("../controllers/errorController"),
     nodemailer = require("nodemailer"),
+    authModel = require("../models/auth"),
     emailAddress = config.EMAIL_ADDRESS,
     emailPassword = config.EMAIL_PASSWORD;
-
-
-// var transporter = nodemailer.createTransport({
-//   service: 'gmail',
-//   auth: {
-//     user: emailAddress,
-//     pass: emailPassword
-//   }
-// });
 
 let transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -28,25 +20,36 @@ let transporter = nodemailer.createTransport({
 var mailOptions = {
   from: emailAddress,
   to: 'm.biken@yahoo.com',
-  subject: 'Sending Email using Node.js',
-  text: 'That was easy!'
+  subject: 'Comfirm the email Notificaiton',
+  text: 'That was easy!',
+  html:'<b>CHECK</b>'
 };
 
-exports.sendEmail = (toEmail) =>{
+exports.sendEmail = (userRequest) =>{
   return new Promise((resolve,reject)=>{
 
     // change mailOption here
     try{
-        mailOptions.to = toEmail
-        transporter.sendMail(mailOptions, function(error, info){
-          if (error) {
-            console.log(error);
-            reject(errors.cannotSendEmail);
-          } else {
-            console.log('Email sent: ' + info.response);
-            resolve();
-          }
+          console.log(userRequest)
+          authModel.createEmailToken(userRequest).then((emailToken)=>{
+              mailOptions.to = userRequest.email
+              // mailOptions.text = 'This is your Token: <a href= "${emailToken}">' + emailToken +'<a>'
+              mailOptions.html = 'This is your Token <a href= ' +`http://localhost:5012/`+ emailToken +">"+ "link." +'<a>'
+              transporter.sendMail(mailOptions, function(error, info){
+                  if (error) {
+                      console.log(error);
+                      reject(errors.cannotSendEmail);
+                  } else {
+                      console.log('Email sent: ' + info.response);
+                      resolve(info);
+                  }
+              })
+        }).catch((err)=>{
+             console.log(err)
+             reject(errors.cannotSendEmail);
         })
+
+
     }catch(err){
       reject(errors.cannotSendEmail)
     }

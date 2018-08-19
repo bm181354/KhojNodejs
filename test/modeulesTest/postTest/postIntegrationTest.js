@@ -76,7 +76,7 @@ describe("$GET post data from database", function(done){
 })
 //(************************************************************************)
 //MARK:- Token related checks
-describe("$NO Token check", function(done){
+describe("$NO/INVALID Token check", function(done){
   "use strict";
 
   beforeEach(function(){

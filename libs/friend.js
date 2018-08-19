@@ -4,10 +4,12 @@ const errors = require("../controllers/errorController");
 const postModel = require("../models/post");
 
 
-exports.getPost = (state,city,category,subcategory) =>{
+exports.getPost = (state,city,category,subcategory,offset,size) =>{
     return new Promise((resolve,reject)=>{
-      if((state || city) && (category || subcategory)){
-         postModel.getPostDB(state,city,category,subcategory).then((data)=>{
+      if((state || city) && (category || subcategory) && offset && size){
+        console.log("CHECK")
+         postModel.getPostDB(state,city,category,subcategory,parseInt(offset),parseInt(size)).then((data)=>{
+           console.log(state,city,category,subcategory,parseInt(offset),parseInt(size))
            if((data.length) < 1){
              reject(errors.notFound)
            }
