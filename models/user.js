@@ -172,8 +172,8 @@ exports.insertUser = (user) => {
               conn.release();
               reject(err)
             }
-            var param = [user.name,user.email,user.age,user.username,user.userPassword,user.userType]
-            conn.query("INSERT INTO USERS (name,email,age,username,userPassword,userType) VALUES (?,?,?,?,?,?)",param).then(function(rows){
+            var param = [user.name,user.email,user.username,user.userPassword,user.userType]
+            conn.query("INSERT INTO USERS (name,email,username,userPassword,userType) VALUES (?,?,?,?,?)",param).then(function(rows){
                // console.log(JSON.parse((rows))); // json file
             conn.release();
             var data = JSON.parse(JSON.stringify(rows))

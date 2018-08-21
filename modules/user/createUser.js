@@ -14,7 +14,7 @@ module.exports = (router) => {
            let userType = req.body.userType;
            let userEmail = req.body.email
            if (userType === "custom") {
-             userController.checkBaseParam(req).then(()=>{
+             userController.checkDuplicateEmail(userEmail).then(()=>{
                    // send email
                    //req.body needs to be signed and attached with email
                    // link with link to this route
@@ -22,19 +22,11 @@ module.exports = (router) => {
                    emailController.sendEmail(req.body).then((info)=>{
                         console.log("EMailSent")
                         // apiResponse(res, [info])
-                        res.end()
+                         apiResponse(res, [{"isSuccess":true}]);
                    }).catch((err)=>{
                      apiResponse(res, null, err, err.code);
                    })
 
-                   //TODO:- remove this and move to another route trigger when user click on email link
-                   // userController.createLocalUser(req.body).then((data)=>{
-                   //       // instead of true send data variable
-                   //       apiResponse(res,[data]); // {"data":{"accessToken": "ASDGHBSADHU", "refreshToken":"Adfasdfadsf"}}
-                   // }).catch((err) => {
-                   //      apiResponse(res, null, err, err.code);
-                   // });
-                   // end
 
              }).catch((err)=>{
                 apiResponse(res, null, err, err.code);

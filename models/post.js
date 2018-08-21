@@ -40,8 +40,10 @@ exports.addPostDB = (req) =>{
 
 }
 
-//TODO:- change the 7 into offset
-exports.getPostDB = (state,city,category,subcategory,offset,size) =>{
+/*
+query
+*/
+exports.getPostsFromDB = (state,city,category,subcategory,offset,size) =>{
      return new Promise((resolve,reject)=>{
        globals.getConn((err,conn) => {
          try{
@@ -51,14 +53,11 @@ exports.getPostDB = (state,city,category,subcategory,offset,size) =>{
                }else{
                    var parameter = [state,city,category,subcategory,size+1,offset]
                    if (subcategory){
-                     console.log("subcategory")
                      var statement = 'SELECT * FROM POST WHERE (state = ? or city = ? ) and (category = ? and subcategory = ?) ORDER BY id DESC LIMIT ? OFFSET ?';
                    }else{
-                     console.log("category")
                      var statement = 'SELECT * FROM POST WHERE (state = ? or city = ? ) and (category = ? or subcategory = ?) ORDER BY id DESC LIMIT ? OFFSET ?';
                    }
                    conn.query(statement,parameter).then((rows)=>{
-                      console.log("result",rows)
                       conn.release();
                       var data = JSON.parse(JSON.stringify(rows))
                       resolve(data);  // if found
@@ -77,7 +76,7 @@ exports.getPostDB = (state,city,category,subcategory,offset,size) =>{
 
 }
 
-exports.getPostParticularDB = (id)=>{
+exports.getPostParticularFromDB = (id)=>{
 
   return new Promise((resolve,reject)=>{
     globals.getConn((err,conn) => {

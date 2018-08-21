@@ -103,7 +103,7 @@ exports.decodeJWT = (token) =>{
         if(err){
           reject(err)
         }
-        resolve(decode)
+        resolve(decoded)
     });
   })
 }

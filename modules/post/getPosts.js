@@ -7,7 +7,7 @@ module.exports = (router) =>{
      try{
             var params = req.params
             var query =  req.query
-            friendController.getPost(query.state,query.city,params.category,params.subcategory,query.offset,query.size).then((data)=>{
+            friendController.getPosts(query.state,query.city,params.category,params.subcategory,query.offset,query.size).then((data)=>{
                   apiResponse(res,data)
               }).catch((err)=>{
                   apiResponse(res,null,err,err.code)

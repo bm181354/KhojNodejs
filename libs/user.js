@@ -92,7 +92,7 @@ exports.create3partyUser = (user) => {
 
 //checker (2DB request)
 /**
- *  
+ *
  * @param req object containing user info [.userType,.userEmail]
  * @param callback function with err and data param
  * @returns the promise object which encap either error/false or true
@@ -137,6 +137,15 @@ exports.checkBaseParam = (req) =>{
 
 exports.checkDuplicateEmail = (email) =>{
   return new Promise((resolve, reject) => {
+
+        if (email === undefined ) {
+            reject(errors.paramMissing);
+        }
+
+        if (typeof email !== "string") {
+            reject(errors.paramCorrupted);
+        }
+
         userModel.findUserByEmail(email).then((user) => {
             if (user === null || user.length < 1) {
                 console.log("user:",user)
@@ -153,6 +162,15 @@ exports.checkDuplicateEmail = (email) =>{
 
 exports.checkDuplicateUsername = (username) =>{
   return new Promise((resolve,reject)=>{
+
+    if ( username === undefined) {
+        reject(errors.paramMissing);
+    }
+
+    if ( typeof req.body.username !== "string") {
+        reject(errors.paramCorrupted);
+    }
+
     userModel.findUserByUsername(username).then((user) => {
         if (user === null || user.length < 1) {
             resolve(false);

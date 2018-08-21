@@ -76,18 +76,14 @@ exports.createRefreshToken = (id,authAccessToken) => {
 exports.createEmailToken = (userRequest) =>{
     return new Promise((resolve,reject)=>{
         try{
-        const name = userRequest.name,
-              email = userRequest.email,
-              username = userRequest.username,
+        const email = userRequest.email,
               userType = userRequest.userType;
 
-        const  emailToken = jwt.sign({email:email,
-           type:userType,
-           username:username,
-           name:name,
+        const  emailToken = jwt.sign({
+           email:email,
+           userType:userType,
            iat: Math.floor(Date.now() / 1000) - 30
         },config.CERT,{expiresIn: '1h'});
-
         resolve(emailToken)
       }catch(err){
           reject(err)

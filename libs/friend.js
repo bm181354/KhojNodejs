@@ -1,14 +1,23 @@
 // public method visible to all
 // even the annoymous guys
+
 const errors = require("../controllers/errorController");
 const postModel = require("../models/post");
 
 
-exports.getPost = (state,city,category,subcategory,offset,size) =>{
+
+/*
+Get all the related posts from the arg
+@param {string} offset: gap between the start of the data
+@param {string} size: size of the data as suggested by front-end
+@returns {Promise}:
+         - resolve : return all {JSON} posts
+         - reject : returns error
+*/
+exports.getPosts = (state,city,category,subcategory,offset,size) =>{
     return new Promise((resolve,reject)=>{
       if((state || city) && (category || subcategory) && offset && size){
-        console.log("CHECK")
-         postModel.getPostDB(state,city,category,subcategory,parseInt(offset),parseInt(size)).then((data)=>{
+         postModel.getPostsFromDB(state,city,category,subcategory,parseInt(offset),parseInt(size)).then((data)=>{
            console.log(state,city,category,subcategory,parseInt(offset),parseInt(size))
            if((data.length) < 1){
              reject(errors.notFound)
@@ -27,7 +36,7 @@ exports.getPost = (state,city,category,subcategory,offset,size) =>{
 Get the particular post from the id
 @param {integer} id -  post id
 @returns {Promise}:
-         - resolve : returns data
+         - resolve : returns particular {JSON} post
          - reject : rreturns error
 */
 
@@ -38,7 +47,7 @@ exports.getParticularPost = (id) =>{
 
       if(id){
 
-         postModel.getPostParticularDB(id).then((data)=>{
+         postModel.getPostParticularFromDB(id).then((data)=>{
 
            if((data.length) < 1){
              return reject(errors.notFound)
