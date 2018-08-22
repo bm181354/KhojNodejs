@@ -62,6 +62,7 @@ app.use(bodyParser.json());
  //app.use("/",require("./modules/auth/refreshToken.js")(router))
  /** *****************************  USER MODULE FUNCTIONS *************************/
  app.use("/", require("./modules/user/createUser.js")(router)); // Create new user
+ app.use("/",require("./modules/user/validUsername.js")(router));
  /** *****************************  GET MODULE FUNCTIONS *************************/
  app.use("/",require("./modules/token/checkEmailToken.js")(router));
  app.use("/",require("./modules/post/getPosts.js")(router));

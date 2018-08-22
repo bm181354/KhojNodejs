@@ -11,6 +11,8 @@ module.exports = (router) =>{
           jwtTokenController.decodeJWT(req.body.token).then((decoded)=>{
               decoded.userPassword = req.body.userPassword;
               req.body = decoded
+              // name:
+              // username
               userController.checkBaseParam(req).then(()=>{
                  userController.createLocalUser(decoded).then((data)=>{
                        apiResponse(res,[data]); // {"data":{"accessToken": "ASDGHBSADHU", "refreshToken":"Adfasdfadsf"}}

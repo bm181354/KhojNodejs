@@ -166,8 +166,8 @@ exports.checkDuplicateUsername = (username) =>{
     if ( username === undefined) {
         reject(errors.paramMissing);
     }
-
-    if ( typeof req.body.username !== "string") {
+    console.log("Username" ,(username))
+    if ( typeof username !== "string") {
         reject(errors.paramCorrupted);
     }
 
