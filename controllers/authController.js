@@ -31,6 +31,7 @@ let validateLoginByType = (userType, password, dbPassword,/* dbUserSeecret, user
 	    //2
 		validateLoginCustom(password, dbPassword, callback);
 	}  else if (userType === "facebook") {
+     callback(false);
   	//validateLoginFacebook(password, dbPassword, user3rdId, userId, callback);
   } //else if (userType === "google") {
 // 		validateLoginGoogle(password, dbPassword, user3rdId, userId, callback);
